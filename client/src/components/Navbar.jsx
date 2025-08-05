@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Menu as MenuIcon, X as NavbarCloseIcon } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import { Button } from "./lightswind/button";
 
 const menuItems = [
   { title: "Home", key: "home", link: "#home" },
@@ -17,6 +18,16 @@ const menuItems = [
   { title: "Pricing", key: "pricing", link: "#pricing" },
   { title: "Testimonials", key: "testimonials", link: "#testimonials" },
 ];
+
+const LetsTalkButton = () =>{
+  return(
+    <Button
+     Link to="/contacts"
+         className="w-fit h-fit px-4 py-1 m-2 rounded-full bg-gradient-to-r from-cyan-500 to-teal-400 text-white font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl"
+   
+    >Lets Talk</Button>
+  )
+}
 
 export default function Navbar() {
   const [openNavbarToggle, setNavbarToggle] = useState(false);
@@ -54,7 +65,10 @@ export default function Navbar() {
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
+            <LetsTalkButton />
           </NavigationMenu>
+
+          
 
           {/* Theme Toggle */}
           <ThemeToggle />
@@ -76,7 +90,7 @@ export default function Navbar() {
 
       {/* MOBILE SLIDE-IN MENU */}
         <div
-          className={`fixed top-0 right-0 h-full bg-white shadow-lg z-40 md:hidden transform transition-transform duration-300 ease-in-out ${
+          className={`fixed top-0 right-0 h-auto bg-white/90 shadow-lg z-40 md:hidden transform transition-transform duration-300 ease-in-out ${
             openNavbarToggle ? "translate-x-0" : "translate-x-full"
           } w-auto max-w-fit px-6 py-8`}
         >
@@ -94,12 +108,13 @@ export default function Navbar() {
             </a>
           ))}
         </div>
-      </div>
+        <LetsTalkButton />
+        </div>
 
       {/* OVERLAY BACKDROP */}
       {openNavbarToggle && (
         <div
-          className="fixed inset-0 bg-purple-500/30 z-30 md:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-purple-500/30 backdrop-blur-sm z-30 md:hidden transition-opacity duration-300"
           onClick={() => setNavbarToggle(false)}
         />
       )}
