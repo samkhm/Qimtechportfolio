@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "./src/components/lightswind.css";
+@import "./components/lightswind.css";
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -118,4 +119,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html {
+  scroll-behavior: smooth;
 }
