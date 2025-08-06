@@ -55,7 +55,8 @@ export default function PricingCard({
           }`}
           size="lg"
         >
-          {buttonText}
+         <a href="https://wa.me/254745801435">{buttonText}</a>
+          
         </Button>
       </CardFooter>
     </Card>
