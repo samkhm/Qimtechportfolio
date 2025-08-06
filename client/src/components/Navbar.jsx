@@ -42,7 +42,7 @@ export default function Navbar() {
   return (
     <>
       {/* HEADER BAR */}
-      <div className="w-full flex items-center justify-between py-2 px-2 border-b bg-white z-50 relative">
+      <div className="w-full sticky top-0 flex items-center justify-between py-2 px-2 border-b bg-white z-50 relative">
         {/* Logo */}
         <div className="text-lg font-bold text-gray-800">MySite</div>
 
@@ -95,7 +95,7 @@ export default function Navbar() {
           } w-auto max-w-fit px-6 py-8`}
         >
 
-        <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-col items-start gap-6 mt-10">
           {menuItems.map((item) => (
             <a
               key={item.key}

@@ -43,7 +43,7 @@ export default function Services(){
                     </p>
                 </div>
 
-                <div className="flex max-w-400 flex-wrap w-fit p-5 gap-3">
+                <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-5">
                     {myServices.map(s =>(
                         <Card
                         key={s.key}

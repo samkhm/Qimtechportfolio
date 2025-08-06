@@ -1,8 +1,8 @@
 import Image from "@/assets/laptop.jpg"
 
 import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
-import { Button } from "./lightswind/button";
-
+import { Button } from "@/components/lightswind/button";
+import  CountUp  from "react-countup";
 
 export default function About() {
 
@@ -49,9 +49,9 @@ export default function About() {
     return (
 
       
-            <div id="about" className="w-full flex flex-col">
+            <div id="about" className="w-full flex flex-col items-center justify-center">
 
-                <div className="w-full flex flex-wrap scroll-mt-20 p-5 ">
+                <div className="max-w-300 flex flex-wrap scroll-mt-20 p-5 ">
                     <section className="w-full md:w-1/2 flex items-center justify-center">
                         <img src={Image} alt="My image" className="w-full h-auto rounded-lg max-w-md" />
                     </section>
@@ -73,7 +73,7 @@ export default function About() {
 
 
 
-                <div className="flex flex-wrap align-center justify-center gap-6 mt-5">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
                     {expExperience.map(item => (
                         <Card
@@ -85,7 +85,8 @@ export default function About() {
     hover:shadow-2xl hover:bg-[rgba(20,46,51,1)] hover:scale-105"
                         >
                             <h2 className="text-3xl font-bold mb-2 text-[rgb(66,153,170)] group-hover:text-white transition-colors duration-300">
-                                {`${item.number} +`}
+                               <CountUp end={item.number} duration={2} suffix="+"/>
+                                
                             </h2>
                             <h3 className="text-lg text-center text-[rgb(66,153,170)] group-hover:text-white transition-colors duration-300">
                                 {item.desc}
@@ -102,7 +103,7 @@ export default function About() {
                 <div className="flex flex-col items-center justify-center p-5 mt-2">
                     <h3 className="text-xl font-bold p-3 border-b-[1px] border-b-[rgb(66,153,170)] mb-2 w-fit ">Hobbies</h3>
                     <h2 className="text-xl font-semibold" style={{ color: "rgb(66, 153, 170)" }}>Things I Love To Do</h2>
-                    <div className="flex flex-wrap p-5 gap-5 max-w-200">
+                    <div className="flex flex-wrap p-5 gap-5 max-w-200 items-center justify-center">
                         {hobbIes.map(h => (
                             <Button
                                 key={h.key}

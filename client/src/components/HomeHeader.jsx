@@ -28,7 +28,7 @@ export default function HomeHeader() {
 
           <Button asChild variant="outline" aria-label="GitHub Profile">
             <a
-              href="https://github.com/your-username"
+              href="https://github.com/samkhm"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -38,7 +38,7 @@ export default function HomeHeader() {
 
           <Button asChild variant="outline" aria-label="Chat on WhatsApp">
             <a
-              href="https://wa.me/1234567890"
+              href="https://wa.me/254745801435"
               target="_blank"
               rel="noopener noreferrer"
             >

@@ -2,6 +2,8 @@ import Navbar from "@/components/Navbar";
 import HomeHeader from "@/components/HomeHeader";
 import About from "@/components/About";
 import Services from "@/components/Services";
+import Skills from "@/components/Skills";
+import Pricing from "@/components/Pricing";
 import { DotBackground } from "@/components/lightswind/grid-dot-background";
 
 
@@ -22,6 +24,8 @@ export default function Home() {
             <HomeHeader />
             <About />
             <Services />
+            <Skills />
+            <Pricing />
 
                     </DotBackground>
             
