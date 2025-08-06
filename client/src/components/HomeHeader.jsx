@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 
 import Image from "@/assets/image.png";
 
+
 import { FaSquareGit, FaWhatsapp } from "react-icons/fa6";
 
 export default function HomeHeader() {

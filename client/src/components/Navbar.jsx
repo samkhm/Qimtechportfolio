@@ -8,6 +8,7 @@ import {
 import { Menu as MenuIcon, X as NavbarCloseIcon } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "./lightswind/button";
+import Logo from "@/assets/logon.png"
 
 const menuItems = [
   { title: "Home", key: "home", link: "#home" },
@@ -44,7 +45,9 @@ export default function Navbar() {
       {/* HEADER BAR */}
       <div className="w-full sticky top-0 flex items-center justify-between py-2 px-2 border-b bg-white z-50 relative">
         {/* Logo */}
-        <div className="text-lg font-bold text-gray-800">MySite</div>
+        <div className="text-lg font-bold text-gray-800 ml-10">
+          <img src={Logo} alt="Qimtech Solutions" className="w-20 h-10" />
+          </div>
 
         {/* Right Side */}
         <div className="flex items-center gap-3">
