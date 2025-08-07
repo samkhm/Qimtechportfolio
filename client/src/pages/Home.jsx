@@ -6,6 +6,7 @@ import Skills from "@/components/Skills";
 import Pricing from "@/components/Pricing";
 import Testimonials from "@/components/Testimonials";
 import Contacts from "@/components/Contacts";
+import Footer from "@/components/Footer";
 import { DotBackground } from "@/components/lightswind/grid-dot-background";
 
 
@@ -31,8 +32,10 @@ export default function Home() {
             <Pricing />
             <Testimonials />
             <Contacts />
+            <Footer />
 
                     </DotBackground>
+        
             
         </div>
 
