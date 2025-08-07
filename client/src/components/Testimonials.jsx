@@ -29,7 +29,8 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <div className="py-16 bg-background overflow-hidden flex items-center justify-center dark:text-white" id="testimonials">
+    <div className="max-w-screen" id="testimonials">
+      <div className="py-16 bg-background overflow-hidden flex items-center justify-center dark:text-white" >
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 animate-fade-in-up bg-gray-100 p-2">
           <h3 className="text-lg font-semibold text-testimonial-accent mb-2 uppercase tracking-wide">
@@ -87,5 +88,8 @@ export default function Testimonials() {
 
       </div>
     </div>
+
+    </div>
+    
   );
 }
