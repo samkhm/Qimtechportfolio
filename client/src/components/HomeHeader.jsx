@@ -7,7 +7,7 @@ import { FaSquareGit, FaWhatsapp } from "react-icons/fa6";
 
 export default function HomeHeader() {
   return (
-    <div className="bg-gray-300 flex flex-wrap p-10" id="home">
+    <div className="bg-gray-300 dark:bg-black/30 dark:text-white flex flex-wrap p-10" id="home">
       {/* Left Section */}
       <section className="max-w-200 md:w-1/2 p-10 flex flex-col justify-center">
         <h1 className="text-4xl font-bold p-2">

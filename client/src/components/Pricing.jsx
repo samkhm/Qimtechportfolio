@@ -80,7 +80,7 @@ const pricingPlans = [
 
 export default function Pricing() {
   return (
-    <div className="min-h-screen bg-gray-100 py-16 px-4 ml-10 mr-10">
+    <div className="min-h-screen bg-gray-100 py-16 px-4 ml-10 mr-10" id="pricing">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">

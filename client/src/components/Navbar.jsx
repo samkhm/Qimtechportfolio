@@ -22,11 +22,12 @@ const menuItems = [
 
 const LetsTalkButton = () =>{
   return(
+    
     <Button
-     Link to="/contacts"
+     
          className="w-fit h-fit px-4 py-1 m-2 rounded-full bg-gradient-to-r from-cyan-500 to-teal-400 text-white font-semibold shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl"
    
-    >Lets Talk</Button>
+    > <a href="#contacts">Lets Talk</a> </Button>
   )
 }
 

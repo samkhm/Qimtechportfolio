@@ -4,7 +4,10 @@ import About from "@/components/About";
 import Services from "@/components/Services";
 import Skills from "@/components/Skills";
 import Pricing from "@/components/Pricing";
+import Testimonials from "@/components/Testimonials";
+import Contacts from "@/components/Contacts";
 import { DotBackground } from "@/components/lightswind/grid-dot-background";
+
 
 
 export default function Home() {
@@ -26,6 +29,8 @@ export default function Home() {
             <Services />
             <Skills />
             <Pricing />
+            <Testimonials />
+            <Contacts />
 
                     </DotBackground>
             

@@ -124,3 +124,22 @@
 html {
   scroll-behavior: smooth;
 }
+.testimonial-scroll:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.testimonial-scroll {
+  animation: scrollLeft 60s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
