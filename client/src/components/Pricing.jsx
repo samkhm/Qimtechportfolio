@@ -1,14 +1,14 @@
 import PricingCard from "./PricingCard";
 import { Crown } from "lucide-react";
+import { motion } from "framer-motion";
 
 const pricingPlans = [
   {
-    
     title: (
-        <div className="flex items-center justify-center gap-2">
-            <Crown className="w-5 h-5 text-accent" />
-            <span>Basic</span>
-        </div>
+      <div className="flex items-center justify-center gap-2">
+        <Crown className="w-5 h-5 text-accent" />
+        <span>Basic</span>
+      </div>
     ),
     price: "$200",
     period: "project",
@@ -26,11 +26,11 @@ const pricingPlans = [
   },
   {
     title: (
-        <div className="flex items-center justify-center gap-2">
-            <Crown className="w-5 h-5 text-accent" />
-            <Crown className="w-5 h-5 text-accent" />
-            <span>Medium</span>
-        </div>
+      <div className="flex items-center justify-center gap-2">
+        <Crown className="w-5 h-5 text-accent" />
+        <Crown className="w-5 h-5 text-accent" />
+        <span>Medium</span>
+      </div>
     ),
     price: "$350",
     period: "project",
@@ -51,12 +51,12 @@ const pricingPlans = [
   },
   {
     title: (
-        <div className="flex items-center justify-center gap-2">
-            <Crown className="w-5 h-5 text-accent" />
-            <Crown className="w-5 h-5 text-accent" />
-            <Crown className="w-5 h-5 text-accent" />
-            <span>Advanced</span>
-        </div>
+      <div className="flex items-center justify-center gap-2">
+        <Crown className="w-5 h-5 text-accent" />
+        <Crown className="w-5 h-5 text-accent" />
+        <Crown className="w-5 h-5 text-accent" />
+        <span>Advanced</span>
+      </div>
     ),
     price: "$500",
     period: "project",
@@ -83,43 +83,74 @@ export default function Pricing() {
     <div className="min-h-screen bg-gray-100 py-16 px-4 ml-10 mr-10" id="pricing">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-16">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
           <h4 className="text-lg font-semibold text-muted-foreground mb-2">Pricing Table</h4>
-          <h2 style={{ color: "rgb(66, 153, 170)" }} className="text-4xl md:text-5xl font-bold text-accent mb-4">
+          <h2
+            style={{ color: "rgb(66, 153, 170)" }}
+            className="text-4xl md:text-5xl font-bold text-accent mb-4"
+          >
             I Offer Great Affordable Prices
           </h2>
           <p className="max-w-2xl mx-auto text-muted-foreground text-lg leading-relaxed">
             Professionally evolve web-enabled resources and error-free user experiences. 
             Interactively provide access to unique architectures rather than customized functionalities.
           </p>
-        </div>
+        </motion.div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
+          initial="hidden"
+          whileInView="visible"
+          transition={{ staggerChildren: 0.2 }}
+          viewport={{ once: true }}
+        >
           {pricingPlans.map((plan, index) => (
-            <PricingCard
+            <motion.div
               key={index}
-              title={plan.title}
-              price={plan.price}
-              period={plan.period}
-              description={plan.description}
-              features={plan.features}
-              isPopular={plan.isPopular}
-              buttonText={plan.buttonText}
-            />
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <PricingCard
+                title={plan.title}
+                price={plan.price}
+                period={plan.period}
+                description={plan.description}
+                features={plan.features}
+                isPopular={plan.isPopular}
+                buttonText={plan.buttonText}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-16">
+        <motion.div
+          className="text-center mt-16"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          viewport={{ once: true }}
+        >
           <p className="text-muted-foreground mb-4">
             Need a custom solution? Let's discuss your specific requirements.
           </p>
-          
-          <a href="https://wa.me/254745801435" className="text-accent font-semibold hover:underline transition-smooth">
-          Contact me for custom pricing → 
+
+          <a
+            href="https://wa.me/254745801435"
+            className="text-accent font-semibold hover:underline transition-smooth"
+          >
+            Contact me for custom pricing →
           </a>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

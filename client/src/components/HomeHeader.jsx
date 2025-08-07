@@ -1,20 +1,28 @@
 import { Button } from "@/components/ui/button";
-
 import Image from "@/assets/image.png";
-
-
 import { FaSquareGit, FaWhatsapp } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 export default function HomeHeader() {
   return (
-    <div className="bg-gray-300 dark:bg-black/30 dark:text-white flex flex-wrap p-10" id="home">
-      {/* Left Section */}
-      <section className="max-w-200 md:w-1/2 p-10 flex flex-col justify-center">
+    <div
+      className="bg-gray-300 dark:bg-black/30 dark:text-white flex flex-wrap p-10"
+      id="home"
+    >
+      {/* Left Section with scroll animation */}
+      <motion.section
+        className="max-w-200 md:w-1/2 p-10 flex flex-col justify-center"
+        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, x: -100 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.5 }}
+      >
         <h1 className="text-4xl font-bold p-2">
           Hey! I am a System <br /> Developer
         </h1>
         <p className="text-lg p-2">
-          I am a System developer with extensive experience in building scalable and robust systems.
+          I am a System developer with extensive experience in building scalable
+          and robust systems.
         </p>
 
         {/* Buttons and Icons */}
@@ -47,17 +55,22 @@ export default function HomeHeader() {
             </a>
           </Button>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Right Section - Image */}
-      <section className="w-full md:w-1/2 p-6 flex items-center justify-center">
+      {/* Right Section - Image with scroll animation */}
+      <motion.section
+        className="w-full md:w-1/2 p-6 flex items-center justify-center"
+        whileInView={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, x: 100 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        viewport={{ once: true, amount: 0.5 }}
+      >
         <img
           src={Image}
           alt="Portrait of the system developer"
           className="w-full h-auto rounded-lg max-w-md"
         />
-      </section>
+      </motion.section>
     </div>
   );
 }
-

@@ -17,7 +17,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
-// ✅ Zod schema with dark mode validations
+import { motion } from 'framer-motion';
+
 const contactFormSchema = z.object({
   name: z
     .string()
@@ -54,7 +55,14 @@ export default function Contacts() {
   };
 
   return (
-    <div className="py-5 px-4 bg-background dark:bg-muted flex items-center justify-center" id="contacts">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
+      viewport={{ once: true }}
+      className="py-5 px-4 bg-background dark:bg-muted flex items-center justify-center"
+      id="contacts"
+    >
       <div className="w-full max-w-2xl bg-card dark:bg-[#1f1f1f] p-8 rounded-2xl shadow-xl space-y-8 border-[2px]">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-primary dark:text-white mb-2" style={{ color: "rgb(66, 153, 170)" }}>
@@ -67,7 +75,6 @@ export default function Contacts() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Name */}
             <FormField
               control={form.control}
               name="name"
@@ -82,7 +89,6 @@ export default function Contacts() {
               )}
             />
 
-            {/* Email */}
             <FormField
               control={form.control}
               name="email"
@@ -90,18 +96,13 @@ export default function Contacts() {
                 <FormItem>
                   <FormLabel className="dark:text-white">Email</FormLabel>
                   <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="you@example.com"
-                      {...field}
-                    />
+                    <Input type="email" placeholder="you@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Message */}
             <FormField
               control={form.control}
               name="message"
@@ -109,29 +110,23 @@ export default function Contacts() {
                 <FormItem>
                   <FormLabel className="dark:text-white">Message</FormLabel>
                   <FormControl>
-                    <Textarea
-                      rows={5}
-                      placeholder="Write your message..."
-                      {...field}
-                    />
+                    <Textarea rows={5} placeholder="Write your message..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Submit Button */}
             <Button
-            type="submit"
-            className="w-full border-gray-400 bg-gradient-to-r from-green-600 to-green-500 text-white hover:from-green-500 hover:to-green-600 transition-all duration-300 ease-in-out font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 disabled:opacity-50"
-            disabled={form.formState.isSubmitting}
+              type="submit"
+              className="w-full border-gray-400 bg-gradient-to-r from-green-600 to-green-500 text-white hover:from-green-500 hover:to-green-600 transition-all duration-300 ease-in-out font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 disabled:opacity-50"
+              disabled={form.formState.isSubmitting}
             >
-            {form.formState.isSubmitting ? 'Sending...' : 'Send Message'}
+              {form.formState.isSubmitting ? 'Sending...' : 'Send Message'}
             </Button>
-
           </form>
         </Form>
       </div>
-    </div>
+    </motion.div>
   );
 }
