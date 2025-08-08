@@ -15,7 +15,7 @@ const menuItems = [
   { title: "About", key: "about", link: "#about" },
   { title: "Services", key: "services", link: "#services" },
   { title: "Skills", key: "skills", link: "#skills" },
-  { title: "Work", key: "work", link: "#work" },
+  { title: "Projects", key: "projects", link: "#projects" },
   { title: "Pricing", key: "pricing", link: "#pricing" },
   { title: "Testimonials", key: "testimonials", link: "#testimonials" },
 ];

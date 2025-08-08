@@ -1,5 +1,5 @@
 import Image from "@/assets/laptop.jpg";
-import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/lightswind/button";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
@@ -19,50 +19,111 @@ export default function About() {
 
   return (
     <div id="about" className="w-full flex flex-col items-center justify-center">
-      <div className="max-w-300 flex flex-wrap scroll-mt-20 p-5 ">
-        {/* Left - Image */}
+      <div className="max-w-300 flex flex-wrap scroll-mt-20 p-5">
+        {/* Left - Static Image (no animation) */}
         <motion.section
           className="w-full md:w-1/2 flex items-center justify-center"
-          initial={{ opacity: 0, x: -100 }}
+          initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true }}
         >
-          <img src={Image} alt="My image" className="w-full h-auto rounded-lg max-w-md" />
+          <motion.img
+            src={Image}
+            alt="My image"
+            className="w-full h-auto rounded-lg max-w-md"
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          />
         </motion.section>
 
-        {/* Right - Text */}
-        <motion.section
-          className="w-full md:w-1/2 p-6 flex flex-col justify-center h-auto bg-gray-100 rounded"
-          initial={{ opacity: 0, x: 100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true, amount: 0.5 }}
-        >
-          <h4 className="text-xl font-bold p-3 border-b-[1px] border-b-[rgb(66,153,170)] mb-2 w-fit" style={{ color: "rgb(66, 153, 170)" }}>About Me</h4>
-          <h3 className="text-xl font-semibold" style={{ color: "rgb(66, 153, 170)" }}>I AM A Passionate Web Designer</h3>
-          <p>Obviously I am a Web Designer. Web Developer with over 7 years of the best experience. Experienced with all stages of the development cycle for ourself dynamic web projects. The as opposed to using Content here, content here, making it look like readable English.</p>
-          <h3 className="text-xl font-semibold p-2" style={{ color: "rgb(66, 153, 170)" }}>Qimtech Solutions</h3>
-          <p>I have a brand called <a href="">Qimtech Solution</a> am using </p>
-          <h3 className="text-xl font-semibold p-2" style={{ color: "rgb(66, 153, 170)" }}>Modern Work</h3>
-          <p>I've worked with React, express, mongo, sql etc</p>
-        </motion.section>
+
+        {/* Right - Animated Text */}
+        <section className="w-full md:w-1/2 p-6 flex flex-col justify-center h-auto bg-gray-100 rounded">
+          <motion.h4
+            className="text-xl font-bold p-3 border-b-[1px] border-b-[rgb(66,153,170)] mb-2 w-fit"
+            style={{ color: "rgb(66, 153, 170)" }}
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            About Me
+          </motion.h4>
+
+          <motion.h3
+            className="text-xl font-semibold"
+            style={{ color: "rgb(66, 153, 170)" }}
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+          >
+            I AM A Passionate Web Designer
+          </motion.h3>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            Obviously I am a Web Designer. Web Developer with over 7 years of the best experience...
+          </motion.p>
+
+          <motion.h3
+            className="text-xl font-semibold p-2"
+            style={{ color: "rgb(66, 153, 170)" }}
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            Qimtech Solutions
+          </motion.h3>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            I have a brand called <a href="">Qimtech Solution</a> am using.
+          </motion.p>
+
+          <motion.h3
+            className="text-xl font-semibold p-2"
+            style={{ color: "rgb(66, 153, 170)" }}
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            viewport={{ once: true }}
+          >
+            Modern Work
+          </motion.h3>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            viewport={{ once: true }}
+          >
+            I've worked with React, express, mongo, sql etc
+          </motion.p>
+        </section>
       </div>
 
       {/* Experience Cards */}
-      <motion.div
-        className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-        initial="hidden"
-        whileInView="visible"
-        transition={{ staggerChildren: 0.2 }}
-        viewport={{ once: true }}
-      >
-        {expExperience.map((item) => (
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {expExperience.map((item, index) => (
           <motion.div
             key={item.key}
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
+            viewport={{ once: true }}
           >
             <Card
               className="group flex flex-col items-center justify-center 
@@ -80,7 +141,7 @@ export default function About() {
             </Card>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
 
       {/* Hobbies */}
       <motion.div
@@ -93,12 +154,12 @@ export default function About() {
         <h3 className="text-xl font-bold p-3 border-b-[1px] border-b-[rgb(66,153,170)] mb-2 w-fit">Hobbies</h3>
         <h2 className="text-xl font-semibold" style={{ color: "rgb(66, 153, 170)" }}>Things I Love To Do</h2>
         <div className="flex flex-wrap p-5 gap-5 max-w-200 items-center justify-center">
-          {hobbIes.map((h) => (
+          {hobbIes.map((h, i) => (
             <motion.div
               key={h.key}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
               viewport={{ once: true }}
             >
               <Button
