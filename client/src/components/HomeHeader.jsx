@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export default function HomeHeader() {
   return (
     <div
-      className="bg-gray-300 dark:bg-black/30 dark:text-white flex flex-wrap p-10"
+      className="bg-gray-300/60 dark:bg-black/30 dark:text-white flex flex-wrap p-10"
       id="home"
     >
       {/* Left Section */}

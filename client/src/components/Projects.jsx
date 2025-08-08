@@ -108,7 +108,7 @@ export default function Projects() {
   };
 
   return (
-    <div className="max-w-screen p-5" id="projects">
+    <div className="max-w-screen p-5 mr-5 ml-5 bg-gray-400/80 rounded" id="projects">
       <section
         aria-labelledby="projects-heading"
         className="container py-12 font-sans antialiased"
@@ -123,6 +123,7 @@ export default function Projects() {
           <motion.h2
             id="projects-heading"
             className="text-3xl md:text-4xl font-extrabold tracking-tight"
+            
           >
             Projects
           </motion.h2>
