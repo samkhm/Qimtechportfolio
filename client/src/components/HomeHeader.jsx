@@ -18,7 +18,7 @@ export default function HomeHeader() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          Hey! I am a System <br /> Developer
+          Hey! I am a Web Systems <br /> Developer
         </motion.h1>
 
         {/* Animated Paragraph */}
@@ -28,8 +28,10 @@ export default function HomeHeader() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          I am a System developer with extensive experience in building scalable
-          and robust systems.
+          👋 Hi, I'm a Full-Stack Web Systems Developer specializing in the MERN stack 
+          (MongoDB, Express, React, Node.js). I build powerful, scalable web applications 
+          that solve real-world business problems
+           from internal tools and dashboards to customer-facing platforms.
         </motion.p>
 
         {/* Buttons and Icons */}

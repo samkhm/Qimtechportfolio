@@ -3,9 +3,12 @@ import { motion } from "framer-motion";
 
 export default function Skills() {
   const sKills = [
+    { key: "js", skill: "Java Script" },
     { key: "react1", skill: "React" },
     { key: "node", skill: "Node.js" },
-    { key: "wp", skill: "WordPress" },
+    { key: "ex", skill: "Express" },
+    { key: "ph", skill: "PhP" },
+    { key: "py", skill: "Python" },
     { key: "sql", skill: "SQL" },
     { key: "mongo", skill: "MongoDB" },
     { key: "tailwind", skill: "Tailwind CSS" },
@@ -39,17 +42,20 @@ export default function Skills() {
             I am expert in
           </motion.h3>
 
-          <motion.p
-            className="max-w-100 p-2 text-center"
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            I've created and updated websites for many different clients. I worked with multiple CMS
-            including WordPress, Joomla, and Drupal, as well as created my own custom website
-            management system in Node.js.
-          </motion.p>
+        <motion.p
+  className="max-w-100 text-left w-full"
+  initial={{ opacity: 0, y: -10 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.2 }}
+  viewport={{ once: true }}
+>
+☑️ I build modern, scalable web applications using technologies like React, Node.js, Express, and MongoDB.
+  <br />
+ ☑️ I’ve also developed custom content management systems from scratch.
+  <br />
+☑️  Whether it’s creating clean UI/UX or optimizing backend performance, I focus on delivering high-quality, maintainable solutions.
+</motion.p>
+
         </div>
 
         {/* Skills Bubbles */}

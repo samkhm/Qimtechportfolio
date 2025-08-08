@@ -9,6 +9,7 @@ export default function Services() {
     { key: "web4", service: "Database Integration" },
     { key: "web5", service: "Responsive UI" },
     { key: "web6", service: "Performance Optimization" },
+    {key:"seo", service: "Search Engine Optimization"}
   ];
 
   return (
