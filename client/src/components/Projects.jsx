@@ -108,7 +108,7 @@ export default function Projects() {
   };
 
   return (
-    <div className="max-w-screen p-5 mr-5 ml-5 bg-gray-400/80 rounded" id="projects">
+    <div className="max-w-screen p-5 mr-5 ml-5 bg-gray-300/80 rounded" id="projects">
       <section
         aria-labelledby="projects-heading"
         className="container py-12 font-sans antialiased"
