@@ -1,0 +1,89 @@
+const Service = require("../models/Services");
+
+//api/rooms
+exports.createService = async (req, res) => {
+  try {
+    const { service, ...rest } = req.body;
+
+    if (!service) {
+      return res.status(400).json({ message: "Service is required" });
+    }
+
+    const serviceExist = await Service.findOne({ service });
+    if (serviceExist) {
+      return res.status(409).json({ message: "Service already exists" });
+    }
+
+const serviceP = await Service.create({
+      service, 
+      ...rest     
+    });
+
+    return res.status(201).json(serviceP);
+
+  } catch (error) {
+    console.error("Error creating Service:", error);
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+
+//api/hobbies/getAllHobbies
+exports.getAllServices = async (req, res) => {
+    try {
+   services = await Service.find();
+   if(!hobbies) return res.status(401).json({ message: "No Services found"});
+    res.json(services);
+  } catch (err) {
+    console.error("Error fetching Service:", err);
+    res.status(500).json({ error: "Server error fetching Services" });
+  }
+};
+
+
+
+//api/hobbies/:id
+
+exports.updateService = async (req, res) =>{
+    try {
+
+        const service = await Service.findById(req.params.id);
+        if(!service){
+            return res.status(404).json({ message: "No Service found"});
+        };
+   
+        const updatedService = await Service.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true}
+        );
+        res.json(updatedService);
+
+        
+    } catch (error) {
+        console.log("Failed to update", error);
+    }
+};
+
+
+//api/room/deleterooms
+exports.deleteService = async (req, res) =>{
+    try {
+        const service = await Service.findById(req.params.id);
+        if(!service) return res.status(404).json({ message: "Service not found"});
+
+        if(req.user.role !== "admin"){
+            return res.status(403).json({ message: "You cant delete a Service"});
+        };
+
+        await Service.findByIdAndDelete(req.params.id);
+        res.json({ message: "Service deleted"});
+        
+    } catch (error) {
+        res.status(400).json({ message: error.message});
+        
+    }
+}
+
+
