@@ -3,20 +3,24 @@ const Project = require("../models/Projects");
 //api/rooms
 exports.createProject = async (req, res) => {
   try {
-    const { title, ...rest } = req.body;
+    const { title,  imageLink, liveLink, githubLink} = req.body;
 
     if (!title) {
       return res.status(400).json({ message: "Title is required" });
     }
 
-    const projectExist = await Hobby.findOne({ title });
+    const projectExist = await Project.findOne({ title });
     if (projectExist) {
       return res.status(409).json({ message: "Title already exists" });
     }
 
 const project = await Project.create({
       title, 
-      ...rest     
+      owner: req.user.id,
+      imageLink, 
+      liveLink,
+      githubLink
+           
     });
 
     return res.status(201).json(project);
@@ -31,15 +35,31 @@ const project = await Project.create({
 
 //api/hobbies/getAllHobbies
 exports.getAllProjects = async (req, res) => {
-    try {
-   projects = await Project.find();
-   if(!hobbies) return res.status(401).json({ message: "No projects found"});
+  const { search } = req.query;
+  try {
+    let projects;
+
+    if (search && search.trim() !== "") {
+      // Search filter
+      projects = await Project.find({
+        title: { $regex: search, $options: 'i' }
+      });
+    } 
+
+        
+    else {
+      // Return all if search is missing or empty
+      projects = await Project.find();
+    }
+
     res.json(projects);
+
   } catch (err) {
     console.error("Error fetching projects:", err);
     res.status(500).json({ error: "Server error fetching projects" });
   }
 };
+
 
 
 

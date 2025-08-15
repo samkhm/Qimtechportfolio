@@ -9,6 +9,7 @@ import { Menu as MenuIcon, X as NavbarCloseIcon } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "./lightswind/button";
 import Logo from "@/assets/logon.png"
+import AdminLogin from "./AdminLogin";
 
 const menuItems = [
   { title: "Home", key: "home", link: "#home" },
@@ -70,6 +71,7 @@ export default function Navbar() {
               ))}
             </NavigationMenuList>
             <LetsTalkButton />
+            <AdminLogin />
           </NavigationMenu>
 
           
@@ -112,7 +114,12 @@ export default function Navbar() {
             </a>
           ))}
         </div>
+
+        <div className="flex flex-wrap items-center">
         <LetsTalkButton />
+        <AdminLogin />
+        </div>
+        
         </div>
 
       {/* OVERLAY BACKDROP */}

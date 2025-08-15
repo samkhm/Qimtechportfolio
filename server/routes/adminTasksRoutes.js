@@ -9,26 +9,26 @@ const router = express.Router();
 
 router.post("/hobby", protect, authorize(["admin"]), createHobby );
 router.get("/hobby", protect, authorize(["admin"]), getAllHobbies);
-router.put("/hobby", protect, authorize(["admin"]), updateHobby);
-router.delete("/hobby", protect, authorize(["admin"]), deleteHobby);
+router.put("/hobby/:id", protect, authorize(["admin"]), updateHobby);
+router.delete("/hobby/:id", protect, authorize(["admin"]), deleteHobby);
 
 router.post("/project", protect, authorize(["admin"]), createProject);
 router.get("/project", protect, authorize(["admin"]), getAllProjects);
-router.put("/project", protect, authorize(["admin"]), updateProject);
-router.delete("/project", protect, authorize(["admin"]), deleteProject);
+router.put("/project/:id", protect, authorize(["admin"]), updateProject);
+router.delete("/project/:id", protect, authorize(["admin"]), deleteProject);
 
 router.post("/services", protect, authorize(["admin"]), createService);
 router.get("/services", protect, authorize(["admin"]), getAllServices);
-router.put("/services", protect, authorize(["admin"]), updateService);
-router.delete("/services", protect, authorize(["admin"]), deleteService);
+router.put("/services/:id", protect, authorize(["admin"]), updateService);
+router.delete("/services/:id", protect, authorize(["admin"]), deleteService);
 
 router.post("/skills", protect, authorize(["admin"]), createSkill);
 router.get("/skills", protect, authorize(["admin"]), getAllSkills);
-router.put("/skills", protect, authorize(["admin"]), updateSkill);
-router.delete("/skills", protect, authorize(["admin"]), deleteSkill);
+router.put("/skills/:id", protect, authorize(["admin"]), updateSkill);
+router.delete("/skills/:id", protect, authorize(["admin"]), deleteSkill);
 
 router.get("/testimony", protect, authorize(["admin"]), getAllTestimonies);
-router.delete("/testimony", protect, authorize(["admin"]), deleteTestimonies);
+router.delete("/testimony/:id", protect, authorize(["admin"]), deleteTestimonies);
 
 
 module.exports = router;

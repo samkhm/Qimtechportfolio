@@ -3,20 +3,20 @@ const Service = require("../models/Services");
 //api/rooms
 exports.createService = async (req, res) => {
   try {
-    const { service, ...rest } = req.body;
+    const { title } = req.body;
 
-    if (!service) {
+    if (!title) {
       return res.status(400).json({ message: "Service is required" });
     }
 
-    const serviceExist = await Service.findOne({ service });
+    const serviceExist = await Service.findOne({ title });
     if (serviceExist) {
       return res.status(409).json({ message: "Service already exists" });
     }
 
 const serviceP = await Service.create({
-      service, 
-      ...rest     
+      title,
+      owner: req.user.id    
     });
 
     return res.status(201).json(serviceP);
@@ -31,10 +31,19 @@ const serviceP = await Service.create({
 
 //api/hobbies/getAllHobbies
 exports.getAllServices = async (req, res) => {
+  const { search } = req.query;
     try {
-   services = await Service.find();
-   if(!hobbies) return res.status(401).json({ message: "No Services found"});
-    res.json(services);
+    let services;
+   if (search && search.trim() !== ""){
+    services = await Service.find({
+      title: { $regex: search, $options: 'i' }
+
+    });
+  } else{
+    services = await Service.find();
+  }
+   
+     res.json(services);
   } catch (err) {
     console.error("Error fetching Service:", err);
     res.status(500).json({ error: "Server error fetching Services" });
