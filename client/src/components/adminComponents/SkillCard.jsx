@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-export default function ServiceCard({ service = [], deleteService, updateService }) {
+export default function SkillCard({ skill = [], deleteSkill, updateSkill }) {
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState(service.title);
+  const [title, setTitle] = useState(skill.title);
 
   const handleSubmit = () =>{
-    updateService(service._id, {title});
+    updateService(skill._id, {title});
     setOpen(false)
   }
   
@@ -22,13 +22,13 @@ export default function ServiceCard({ service = [], deleteService, updateService
      <Card className= "relative animation-fade ">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">
-          {service.title}
+          {skill.title}
         </CardTitle>
       </CardHeader>
 
       <CardFooter className="flex justify-between gap-2 flex-wrap">
         
-        <Button onClick={() => deleteService(service._id)}>
+        <Button onClick={() => deleteSkill(service._id)}>
           <TrashIcon className="w-5 h-5" />
         </Button>
 
@@ -41,8 +41,8 @@ export default function ServiceCard({ service = [], deleteService, updateService
 
           <DialogContent className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border p-6">
             <DialogHeader>
-              <DialogTitle>Update Service</DialogTitle>
-              <DialogDescription>Update service for your portfolio.</DialogDescription>
+              <DialogTitle>Update Skill</DialogTitle>
+              <DialogDescription>Update skill for your portfolio.</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-3 mt-4">

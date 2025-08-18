@@ -2,8 +2,10 @@ import Home from "./Home";
 import Users from "./Users";
 import Projects from "../components/adminComponents/Projects";
 import Services from "../components/adminComponents/Service";
+import Skills from "../components/adminComponents/Skills";
 export default function MainContent({ activeSection, createProject, project, deleteProject, updateProject, query, setQuery, 
-    service, createService, serviceQuery, setServiceQuery }){
+    service, createService, serviceQuery, setServiceQuery, deleteService,
+skill, skillQuery, setSkillQuery, deleteSkill, createSkill }){
     let content;
     switch(activeSection){
         case 'home':
@@ -18,10 +20,10 @@ export default function MainContent({ activeSection, createProject, project, del
             project={project}/> </div>
             break;
         case 'services':
-            content = <div className="dark:bg-gray-300"> <Services service = {service} createService={createService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery}/> </div>
+            content = <div className="dark:bg-gray-300"> <Services service = {service} createService={createService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery} deleteService={deleteService}/> </div>
             break;
         case 'skills':
-            content = <div className="dark:bg-gray-300"> 4 </div>
+            content = <div className="dark:bg-gray-300"> <Skills skill = {skill} createSkill={createSkill} skillQuery={skillQuery} setSkillQuery={setSkillQuery} deleteSkill={deleteSkill}/> </div>
             break;
         case 'hobbies':
             content = <div className="dark:bg-gray-300"> 4 </div>
