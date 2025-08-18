@@ -4,6 +4,7 @@ import AdminMainContent from "@/components/AdminMainContent";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import API from "@/services/api";
+import { FaAcquisitionsIncorporated } from "react-icons/fa";
 
 export default function AdminDashboard(){
     const [activeSection, setActiveSection] = useState('home');
@@ -12,6 +13,10 @@ export default function AdminDashboard(){
     const [query, setQuery] = useState("");
     const [serviceQuery, setServiceQuery] = useState("");
     const [users, setUser] = useState([]);
+    const [skill, setSkill] = useState([]);
+    const [skillQuery, setSkillQuery] = useState("");
+    const [hobby, setHobby] = useState([]);
+    const [hobbyQuery, setHobbyQuery] = useState("");
 
     //loading users
     const loadUser = async () =>{
@@ -104,10 +109,146 @@ export default function AdminDashboard(){
         }
     }
 
+    const updateService = async (id, payload) =>{
+        try {
+            const res = await API.put(`/admin_operations/services/${id}`, payload);
+            setService(prev => prev.map(s => s._id === id ? res.data : s));
+            toast.success(res?.data?.message || "Service updated");
+            
+        } catch (error) {
+            console.log("Error is", error);
+            const message = error?.response?.data?.message || "Service Failed to update!";
+            toast.error(message);
+
+            
+        }
+
+    }
+    const deleteService = async (id) =>{
+        try {
+          const res =  await API.delete(`/admin_operations/services/${id}`);
+            setService(prev => prev.filter(s => s._id !== id));
+            toast.success(res?.data?.message || "Service deleted");
+        } catch (error) {
+             console.log("Error is", error);
+            const message = error?.response?.data?.message || "Service Failed to delete!";
+            toast.error(message);
+            
+        }
+    }
+
+    //creating skills
+
+    const createSkill = async (payload) =>{
+        try {
+            const res = await API.post("/admin_operations/skills", payload);
+            setSkill(prev => [res.data, ...prev]);
+            toast.success(res?.data?.message || "Skill added");
+            
+        } catch (error) {
+            const message = error?.response?.data?.message || "Skill addition failed";
+            toast.error(message);
+            
+        }
+    }
+
+    const deleteSkill = async (id) =>{
+        try {
+         const res = await API.delete(`/admin_operations/skills/${id}`);
+            setSkill(prev => prev.filter(s => s._id !== id));
+            const message = res?.data?.message || "Skil deleted";
+            toast.success(message)
+            
+        } catch (error) {
+            const message = error?.response?.data?.message || "Failed to delete";
+            toast.error(message);
+            
+        }
+    }
+
+    const loadSkills = async () =>{
+        try {
+            const res = await API.get(`/admin_operations/skills?search=${encodeURIComponent(skillQuery)}`);
+            setSkill(res.data);
+                                    
+        } catch (error) {
+            console.log("Skill fetch error : ",error)
+            
+        }
+    }
+
+
+    const updateSkill = async (id, payload) =>{
+        try {
+            const res = await API.put(`/admin_operations/skills/${id}`, payload);
+            setSkill(prev => prev.map(s => s._id === id ? res.data : s));
+            const message = res?.data?.message || "Skill updated";
+            toast.success(message);
+            
+        } catch (error) {
+
+            const message = error?.response?.data?.message || "Failed to update skill";
+            toast.error(message);
+            
+        }
+    }
+
+    //Hobbies
+    const createHobby = async (payload) =>{
+        try {
+            const res = await API.post("/admin_operations/hobby", payload);
+            setHobby(prev => [res.data, ...prev]);
+            const message = res?.data?.message || "Hobby created";            
+        } catch (error) {
+            const message = error?.response?.data?.message || "Hobby failed to be added";
+            toast.error(message);
+            
+        }
+    }
+    const loadHobby = async () =>{
+        try {
+            const res = await API.get(`/admin_operations/hobby?search=${encodeURIComponent(hobbyQuery)}`);
+            setHobby(res.data);
+            console.log("Hbs", res.data);
+            
+        } catch (error) {
+            console.log("Error fetching hobbies", error);
+            
+        }
+    }
+    const updateHobby = async (id, payload) =>{
+        try {
+            const res = await API.put(`admin_operations/hobby/${id}`, payload);
+            setHobby(prev => prev.map(h => h._id === id ? res.data : h));
+            const message = res?.data?.message || "Hobby updated";
+            toast.success(message);
+            
+        } catch (error) {
+            const message = error?.data?.response?.message || "Failed to update hobby";
+            toast.error(message);
+            
+        }
+    }
+    const deleteHobby = async (id) =>{
+        try {
+            const res = await API.delete(`/admin_operations/hobby/${id}`);
+            setHobby(prev => prev.filter(h => h._id !== id));
+            const message = res?.data?.message || "Hobby deleted";
+            toast.success(message);
+            
+        } catch (error) {
+            const message = error?.data?.response?.message || "Failed to delete hobby";
+            toast.error(message);
+            
+        }
+    }
+
         useEffect(() =>{
         loadUser();
         loadProjects();
         loadServices();
+        loadSkills();
+        loadHobby();
          }, []);
 
     return(
@@ -118,7 +259,9 @@ export default function AdminDashboard(){
                 <AdminMainContent activeSection = {activeSection} createProject = {createProject} 
                 users = {users}
                 query={query} setQuery={setQuery} project={project} deleteProject={deleteProject} updateProject={updateProject}
-                service ={service} createService={createService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery}/>
+                service ={service} createService={createService} updateService={updateService} deleteService={deleteService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery}
+                skill={skill} createSkill={createSkill} updateSkill={updateSkill} deleteSkill={deleteSkill} skillQuery={skillQuery} setSkillQuery={setSkillQuery}
+                hobby={hobby} createHobby={createHobby} updateHobby={updateHobby} deleteHobby={deleteHobby} hobbyQuery={hobbyQuery} setHobbyQuery={setHobbyQuery}/>
             </div>
         </div>
     )

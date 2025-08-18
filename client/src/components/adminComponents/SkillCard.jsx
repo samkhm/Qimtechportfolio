@@ -14,7 +14,7 @@ export default function SkillCard({ skill = [], deleteSkill, updateSkill }) {
   const [title, setTitle] = useState(skill.title);
 
   const handleSubmit = () =>{
-    updateService(skill._id, {title});
+    updateSkill(skill._id, {title});
     setOpen(false)
   }
   
@@ -28,7 +28,7 @@ export default function SkillCard({ skill = [], deleteSkill, updateSkill }) {
 
       <CardFooter className="flex justify-between gap-2 flex-wrap">
         
-        <Button onClick={() => deleteSkill(service._id)}>
+        <Button onClick={() => deleteSkill(skill._id)}>
           <TrashIcon className="w-5 h-5" />
         </Button>
 

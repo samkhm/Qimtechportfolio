@@ -4,7 +4,7 @@ import { getUserRole } from "@/utils/auth";
 import { Input } from "@/components/ui/input";
 
 
-export default function Service({ service =[], deleteService, createService, serviceQuery, setServiceQuery }) {
+export default function Service({ service =[], deleteService, createService, updateService, serviceQuery, setServiceQuery }) {
   
   const userRole = getUserRole();
   const isAdmin = userRole === "admin";
@@ -39,6 +39,7 @@ export default function Service({ service =[], deleteService, createService, ser
               key={serv._id}
               service={serv}
               deleteService={deleteService}
+              updateService={updateService}
             />
           ))}
         </section>

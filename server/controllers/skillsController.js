@@ -3,20 +3,20 @@ const Skill = require("../models/Skills");
 //api/rooms
 exports.createSkill = async (req, res) => {
   try {
-    const { skill, ...rest } = req.body;
+    const { title } = req.body;
 
-    if (!skill) {
+    if (!title) {
       return res.status(400).json({ message: "Skill is required" });
     }
 
-    const skillExist = await Skill.findOne({ skill });
+    const skillExist = await Skill.findOne({ title });
     if (skillExist) {
       return res.status(409).json({ message: "Skill already exists" });
     }
 
 const skillP = await Skill.create({
-      skill, 
-      ...rest     
+      title, 
+      owner: req.user.id     
     });
 
     return res.status(201).json(skillP);
@@ -31,10 +31,20 @@ const skillP = await Skill.create({
 
 //api/hobbies/getAllHobbies
 exports.getAllSkills = async (req, res) => {
+  const { search } = req.query;
     try {
-   skills = await Skill.find();
-   if(!hobbies) return res.status(401).json({ message: "No Skills found"});
-    res.json(skills);
+      let skill;
+      if(search && search.trim() !== ""){
+        skill = await Skill.find({
+          title : { $regex : search, $options: 'i'}
+          
+        })
+      } else{
+        skill = await Skill.find();
+
+      }
+
+    res.json(skill);
   } catch (err) {
     console.error("Error fetching skill:", err);
     res.status(500).json({ error: "Server error fetching skills" });

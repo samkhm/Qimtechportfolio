@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-export default function HobbyCard({hobby = [], deleteHobby, updateHobby}){
+export default function HobbyCard({hobby, deleteHobby, updateHobby}){
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState(hobby.title);
 

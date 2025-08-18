@@ -4,7 +4,7 @@ import { getUserRole } from "@/utils/auth";
 import { Input } from "@/components/ui/input";
 
 
-export default function Skills({ hobby = [], deleteHobby, createHobby, hobbyQuery = " ", setHobbyQuery }) {
+export default function Hobby({ hobby, deleteHobby, createHobby, updateHobby, hobbyQuery, setHobbyQuery }) {
   
   const userRole = getUserRole();
   const isAdmin = userRole === "admin";
@@ -36,9 +36,10 @@ export default function Skills({ hobby = [], deleteHobby, createHobby, hobbyQuer
         <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredHobbys.map(hb => (
             <HobbyCard
-              key={hb._id}
-              hobby={hb}
-              deleteHobby={deleteHobby}
+              key = {hb._id}
+              hobby = {hb}
+              deleteHobby = {deleteHobby}
+              updateHobby = {updateHobby}
             />
           ))}
         </section>

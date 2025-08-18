@@ -3,20 +3,20 @@ const Hobby = require("../models/Hobbies");
 //api/rooms
 exports.createHobby = async (req, res) => {
   try {
-    const { hobby, ...rest } = req.body;
+    const { title } = req.body;
 
-    if (!hobby) {
+    if (!title) {
       return res.status(400).json({ message: "Hobby is required" });
     }
 
-    const hobbyExist = await Hobby.findOne({ hobby });
+    const hobbyExist = await Hobby.findOne({ title });
     if (hobbyExist) {
       return res.status(409).json({ message: "Hobby already exists" });
     }
 
-const hobbyCreated =   await Hobby.create({
-      hobby,
-      ...rest     
+const hobbyCreated =  await Hobby.create({
+      title,
+      owner: req.user.id     
     });
 
     return res.status(201).json(hobbyCreated);
@@ -31,11 +31,17 @@ const hobbyCreated =   await Hobby.create({
 
 //api/hobbies/getAllHobbies
 exports.getAllHobbies = async (req, res) => {
-  
+  const { search } = req.query;  
   try {
-   hobbies = await Hobby.find();
-   if(!hobbies) return res.status(401).json({ message: "No hobbies found"});
-    res.json(hobbies);
+    let hobby;
+    if(search && search.trim() !== ""){
+      hobby = await Hobby.find({
+        title : { $regex: search, $options: 'i'}
+      })
+    }else{
+      hobby = await Hobby.find();
+    }
+      res.json(hobby);
   } catch (err) {
     console.error("Error fetching hobbiess:", err);
     res.status(500).json({ error: "Server error fetching hobbies" });
@@ -78,7 +84,7 @@ exports.deleteHobby = async (req, res) =>{
             return res.status(403).json({ message: "You cant delete a hobby"});
         };
 
-        await Room.findByIdAndDelete(req.params.id);
+        await Hobby.findByIdAndDelete(req.params.id);
         res.json({ message: "Hobby deleted"});
         
     } catch (error) {

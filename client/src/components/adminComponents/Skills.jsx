@@ -4,7 +4,7 @@ import { getUserRole } from "@/utils/auth";
 import { Input } from "@/components/ui/input";
 
 
-export default function Skills({ skill = [], deleteSkill, createSkill, skillQuery = " ", setSkillQuery }) {
+export default function Skills({ skill = [], deleteSkill, createSkill, updateSkill, skillQuery, setSkillQuery }) {
   
   const userRole = getUserRole();
   const isAdmin = userRole === "admin";
@@ -28,7 +28,7 @@ export default function Skills({ skill = [], deleteSkill, createSkill, skillQuer
             onChange={e => setSkillQuery(e.target.value)}
           />
         )}
-        {isAdmin && <SkillDialog onSubmit={createSkill} />}
+        {isAdmin && <SkillDialog onSubmit = {createSkill} />}
        
       </div>
 
@@ -39,6 +39,7 @@ export default function Skills({ skill = [], deleteSkill, createSkill, skillQuer
               key={sk._id}
               skill={sk}
               deleteSkill={deleteSkill}
+              updateSkill={updateSkill}
             />
           ))}
         </section>
