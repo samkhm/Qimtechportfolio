@@ -3,16 +3,19 @@ import Users from "./Users";
 import Projects from "../components/adminComponents/Projects";
 import Services from "../components/adminComponents/Service";
 import Skills from "../components/adminComponents/Skills";
-export default function MainContent({ activeSection, createProject, project, deleteProject, updateProject, query, setQuery, 
-    service, createService, serviceQuery, setServiceQuery, deleteService,
-skill, skillQuery, setSkillQuery, deleteSkill, createSkill }){
+import Hobby from "../components/adminComponents/Hobby";
+import Testimony from "../components/adminComponents/Testimony";
+export default function MainContent({users, activeSection, createProject, project, deleteProject, updateProject, query, setQuery, 
+    service, createService, serviceQuery, setServiceQuery, deleteService, updateService,
+skill, skillQuery, setSkillQuery, deleteSkill, createSkill, updateSkill,
+hobby, hobbyQuery, setHobbyQuery, deleteHobby, createHobby, updateHobby }){
     let content;
     switch(activeSection){
         case 'home':
             content = <div className="dark:bg-gray-300"> <Home /> </div>
             break;
         case 'users':
-            content = <div className="bg-gray-700 p-2 flex flex-wrap man-w-full overflow-x-scroll"> <Users /></div>
+            content = <div className="bg-gray-700 p-2 flex flex-wrap man-w-full overflow-x-scroll"> <Users users={users}/></div>
             break;
         case 'projects':
             content = <div className="dark:bg-gray-300"> <Projects createProject={createProject} deleteProject={deleteProject} updateProject={updateProject}
@@ -20,16 +23,16 @@ skill, skillQuery, setSkillQuery, deleteSkill, createSkill }){
             project={project}/> </div>
             break;
         case 'services':
-            content = <div className="dark:bg-gray-300"> <Services service = {service} createService={createService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery} deleteService={deleteService}/> </div>
+            content = <div className="dark:bg-gray-300"> <Services service = {service} createService={createService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery} deleteService={deleteService} updateService={updateService}/> </div>
             break;
         case 'skills':
-            content = <div className="dark:bg-gray-300"> <Skills skill = {skill} createSkill={createSkill} skillQuery={skillQuery} setSkillQuery={setSkillQuery} deleteSkill={deleteSkill}/> </div>
+            content = <div className="dark:bg-gray-300"> <Skills skill = {skill} createSkill={createSkill} skillQuery={skillQuery} setSkillQuery={setSkillQuery} deleteSkill={deleteSkill} updateSkill={updateSkill}/> </div>
             break;
         case 'hobbies':
-            content = <div className="dark:bg-gray-300"> 4 </div>
+            content = <div className="dark:bg-gray-300"> <Hobby hobby = {hobby} createHobby={createHobby} hobbyQuery={hobbyQuery} setHobbyQuery={setHobbyQuery} deleteHobby={deleteHobby} updateHobby={updateHobby}/> </div>
             break;
         case 'testimonials':
-            content = <div className="dark:bg-gray-300"> 4 </div>
+            content = <div className="dark:bg-gray-300"> <Testimony /> </div>
             break;
         
         default:

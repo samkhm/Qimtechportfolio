@@ -60,8 +60,8 @@ export default function Users({ users = [] }) {
             data.map((user, index) => (
               <TableRow key={user._id}>
                 <TableCell className="font-medium">{index + 1}</TableCell>
-                <TableCell>{user.firstName}</TableCell>
-                <TableCell>{user.lastName}</TableCell>
+                <TableCell>{user.first_name}</TableCell>
+                <TableCell>{user.last_name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 
               </TableRow>

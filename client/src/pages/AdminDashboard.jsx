@@ -11,6 +11,20 @@ export default function AdminDashboard(){
     const [service, setService] = useState([]);
     const [query, setQuery] = useState("");
     const [serviceQuery, setServiceQuery] = useState("");
+    const [users, setUser] = useState([]);
+
+    //loading users
+    const loadUser = async () =>{
+        try {
+            const res = await API.get("/auth/users");
+            setUser(res.data);
+            
+            
+        } catch (error) {
+            console.log("Fetching users error", error);
+            
+        }
+    }
     
     // creating of projects
     const loadProjects = async () =>{
@@ -91,6 +105,7 @@ export default function AdminDashboard(){
     }
 
         useEffect(() =>{
+        loadUser();
         loadProjects();
         loadServices();
          }, []);
@@ -101,6 +116,7 @@ export default function AdminDashboard(){
             <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] h-screen">
                 <Sidebar activeSection = {activeSection} setActiveSection = {setActiveSection}/>
                 <AdminMainContent activeSection = {activeSection} createProject = {createProject} 
+                users = {users}
                 query={query} setQuery={setQuery} project={project} deleteProject={deleteProject} updateProject={updateProject}
                 service ={service} createService={createService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery}/>
             </div>
