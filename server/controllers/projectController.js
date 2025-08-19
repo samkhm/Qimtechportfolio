@@ -31,8 +31,6 @@ const project = await Project.create({
   }
 };
 
-
-
 //api/hobbies/getAllHobbies
 exports.getAllProjects = async (req, res) => {
   const { search } = req.query;
@@ -67,12 +65,13 @@ exports.getAllProjects = async (req, res) => {
 
 exports.updateProject = async (req, res) =>{
     try {
-
+      
         const project = await Project.findById(req.params.id);
         if(!project){
             return res.status(404).json({ message: "No Project found"});
         };
    
+
         const updatedProject = await Project.findByIdAndUpdate(
             req.params.id,
             req.body,
@@ -85,6 +84,24 @@ exports.updateProject = async (req, res) =>{
         console.log("Failed to update", error);
     }
 };
+
+// Backend
+exports.toggleCompleted = async (req, res) => {
+  try {
+    const updatedProject = await Project.findByIdAndUpdate(
+      req.params.id,
+      { completed: req.body.completed }, // only update this field
+      { new: true }
+    );
+    if (!updatedProject) {
+      return res.status(404).json({ message: "No Project found" });
+    }
+    res.json({ message: "Completion status updated", project: updatedProject });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 
 //api/room/deleterooms

@@ -5,7 +5,7 @@ import Services from "../components/adminComponents/Service";
 import Skills from "../components/adminComponents/Skills";
 import Hobby from "../components/adminComponents/Hobby";
 import Testimony from "../components/adminComponents/Testimony";
-export default function MainContent({users, activeSection, createProject, project, deleteProject, updateProject, query, setQuery, 
+export default function MainContent({users, activeSection, createProject, project, deleteProject, updateProject, toggleCompleted, query, setQuery, 
     service, createService, serviceQuery, setServiceQuery, deleteService, updateService,
 skill, skillQuery, setSkillQuery, deleteSkill, createSkill, updateSkill,
 hobby, hobbyQuery, setHobbyQuery, deleteHobby, createHobby, updateHobby }){
@@ -19,7 +19,7 @@ hobby, hobbyQuery, setHobbyQuery, deleteHobby, createHobby, updateHobby }){
             break;
         case 'projects':
             content = <div className="dark:bg-gray-300"> <Projects createProject={createProject} deleteProject={deleteProject} updateProject={updateProject}
-            query={query} setQuery={setQuery}
+            query={query} setQuery={setQuery} toggleCompleted={toggleCompleted}
             project={project}/> </div>
             break;
         case 'services':

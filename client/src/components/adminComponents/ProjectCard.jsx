@@ -1,5 +1,5 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrashIcon, BookmarkIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import { Button } from "@/components/ui/button";
 import {
   Dialog, DialogTrigger, DialogContent,
@@ -8,8 +8,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { FaEdit } from "react-icons/fa"
+import { DeleteIcon } from "lucide-react";
 
-export default function ProjectCard({ project, deleteProject, updateProject }) {
+
+export default function ProjectCard({ project, deleteProject, updateProject, toggleCompleted}) {
   const [open, setOpen] = useState(false);
 
   const [title, setTitle] = useState(project.title);
@@ -33,13 +36,15 @@ export default function ProjectCard({ project, deleteProject, updateProject }) {
       <CardFooter className="flex justify-between gap-2 flex-wrap">
         
         <Button onClick={() => deleteProject(project._id)}>
-          <TrashIcon className="w-5 h-5" />
+          <TrashIcon className="w-5 h-5 text-red-600" />
         </Button>
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
-              <BookmarkIcon className="w-5 h-5" />
+
+              <FaEdit className="w-5 h-5 text-green-900" />
+
             </Button>
           </DialogTrigger>
 
@@ -66,6 +71,18 @@ export default function ProjectCard({ project, deleteProject, updateProject }) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+          <input
+          type="checkbox"
+          
+          checked={project.completed}
+          //pass both evant and id to handle toggle
+          onChange={(e) => toggleCompleted(project._id, e)}
+        />
+        
+        
+      
+
       </CardFooter>
     </Card>
   );

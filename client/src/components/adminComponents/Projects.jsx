@@ -13,7 +13,7 @@ import { useState } from "react";
 
 
 
-export default function Projects({ project, deleteProject, createProject, updateProject, query, setQuery }) {
+export default function Projects({ project, deleteProject, createProject, updateProject, toggleCompleted, query, setQuery }) {
   const [category, setCategory] = useState("all");
   const userRole = getUserRole();
   const isAdmin = userRole === "admin";
@@ -76,6 +76,7 @@ export default function Projects({ project, deleteProject, createProject, update
               project={proj}
               deleteProject={deleteProject}
               updateProject={updateProject}
+              toggleCompleted={toggleCompleted}
             />
           ))}
         </section>

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import API from "@/services/api";
 import { FaAcquisitionsIncorporated } from "react-icons/fa";
+import { id } from "zod/v4/locales";
 
 export default function AdminDashboard(){
     const [activeSection, setActiveSection] = useState('home');
@@ -17,6 +18,7 @@ export default function AdminDashboard(){
     const [skillQuery, setSkillQuery] = useState("");
     const [hobby, setHobby] = useState([]);
     const [hobbyQuery, setHobbyQuery] = useState("");
+    
 
     //loading users
     const loadUser = async () =>{
@@ -69,16 +71,37 @@ export default function AdminDashboard(){
                 
             }
         }
-            const updateProject = async (id, payload) => {
+        
+        const updateProject = async (id, payload) => {
+
             try {
+                
                 const res = await API.put(`/admin_operations/project/${id}`, payload);
                 setProject(prev => prev.map(p => p._id === id ? res.data : p));
-                toast.success(res?.data?.message ?? "Project Updated");
+                toast.success(res?.data?.message ?? "Project Updated");            
+                               
             } catch (error) {
                 console.error(error);
-                toast.error(error?.response?.data?.message ?? "Failed to update project");
+                toast.error(error?.response?.data?.message || "Failed to update project");
             }
             };
+
+
+            const toggleCompleted = async (id, e) => {
+                
+                const newCompleted = e.target.checked;
+                try {
+                    const res = await API.put(`/admin_operations/project_complete/${id}`, {
+                    completed: newCompleted,
+                    });
+                    setProject(prev => prev.map(p => p._id === id ? res.data.project : p));
+                } catch (err) {
+                    console.error(err);
+                }
+                };
+
+
+          
 
 
         //  creating of services
@@ -258,7 +281,7 @@ export default function AdminDashboard(){
                 <Sidebar activeSection = {activeSection} setActiveSection = {setActiveSection}/>
                 <AdminMainContent activeSection = {activeSection} createProject = {createProject} 
                 users = {users}
-                query={query} setQuery={setQuery} project={project} deleteProject={deleteProject} updateProject={updateProject}
+                query={query} setQuery={setQuery} project={project} deleteProject={deleteProject} updateProject={updateProject} toggleCompleted={toggleCompleted} 
                 service ={service} createService={createService} updateService={updateService} deleteService={deleteService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery}
                 skill={skill} createSkill={createSkill} updateSkill={updateSkill} deleteSkill={deleteSkill} skillQuery={skillQuery} setSkillQuery={setSkillQuery}
                 hobby={hobby} createHobby={createHobby} updateHobby={updateHobby} deleteHobby={deleteHobby} hobbyQuery={hobbyQuery} setHobbyQuery={setHobbyQuery}/>

@@ -1,7 +1,7 @@
 const express = require("express");
 const { protect, authorize} = require("../middlewares/auth");
 const { createHobby, getAllHobbies, updateHobby, deleteHobby} = require("../controllers/hobbyController");
-const { createProject, getAllProjects, updateProject, deleteProject} = require("../controllers/projectController");
+const { createProject, getAllProjects, updateProject, deleteProject, toggleCompleted} = require("../controllers/projectController");
 const { createService, getAllServices, updateService, deleteService} = require("../controllers/serviceController");
 const { createSkill, getAllSkills, updateSkill, deleteSkill} = require("../controllers/skillsController");
 const { createTestimony, getAllTestimonies, deleteTestimonies} = require("../controllers/testimonialsController");
@@ -16,6 +16,7 @@ router.post("/project", protect, authorize(["admin"]), createProject);
 router.get("/project", protect, authorize(["admin"]), getAllProjects);
 router.put("/project/:id", protect, authorize(["admin"]), updateProject);
 router.delete("/project/:id", protect, authorize(["admin"]), deleteProject);
+router.put("/project_complete/:id", protect, authorize(["admin"]), toggleCompleted);
 
 router.post("/services", protect, authorize(["admin"]), createService);
 router.get("/services", protect, authorize(["admin"]), getAllServices);
