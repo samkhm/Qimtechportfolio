@@ -35,7 +35,7 @@ export default function Navbar(){
                         {user && (
                             <>
                                <div className="px-2 py-1.5 text-sm text-gray-600 dark:text-gray-300 border-b">
-                                 {user.firstName}
+                                 {user.first_name}
                                </div>
                             </>
                         )}
