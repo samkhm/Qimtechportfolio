@@ -33,7 +33,7 @@ const messageP = await Testimony.create({
 exports.getAllTestimonies = async (req, res) => {
     try {
    messages = await Testimony.find();
-   if(!hobbies) return res.status(401).json({ message: "No messages found"});
+   if(!messages) return res.status(401).json({ message: "No messages found"});
     res.json(messages);
   } catch (err) {
     console.error("Error fetching message:", err);

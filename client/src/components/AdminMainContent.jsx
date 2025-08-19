@@ -8,7 +8,7 @@ import Testimony from "../components/adminComponents/Testimony";
 export default function MainContent({users, activeSection, createProject, project, deleteProject, updateProject, toggleCompleted, query, setQuery, 
     service, createService, serviceQuery, setServiceQuery, deleteService, updateService,
 skill, skillQuery, setSkillQuery, deleteSkill, createSkill, updateSkill,
-hobby, hobbyQuery, setHobbyQuery, deleteHobby, createHobby, updateHobby }){
+hobby, hobbyQuery, setHobbyQuery, deleteHobby, createHobby, updateHobby, testy }){
     let content;
     switch(activeSection){
         case 'home':
@@ -32,7 +32,7 @@ hobby, hobbyQuery, setHobbyQuery, deleteHobby, createHobby, updateHobby }){
             content = <div className="dark:bg-gray-300"> <Hobby hobby = {hobby} createHobby={createHobby} hobbyQuery={hobbyQuery} setHobbyQuery={setHobbyQuery} deleteHobby={deleteHobby} updateHobby={updateHobby}/> </div>
             break;
         case 'testimonials':
-            content = <div className="dark:bg-gray-300"> <Testimony /> </div>
+            content = <div className="dark:bg-gray-300"> <Testimony testy = {testy}/> </div>
             break;
         
         default:

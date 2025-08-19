@@ -2,17 +2,12 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { TrashIcon, BookmarkIcon } from "@heroicons/react/24/solid";
 import { Button } from "@/components/ui/button";
 
-export default function TestimonyCard({testy = [], approveTest, deleteTest}){
+export default function TestimonyCard({testy, approveTest, deleteTest}){
     return(
         <Card className= "relative animation-fade ">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">
-          {testy.name} Sam
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p>{testy.text} I love you</p>
-      </CardContent>
+          <CardContent>
+        <p>{testy.message}</p>
+         </CardContent>
 
       <CardFooter className="flex justify-between gap-2 flex-wrap">
       </CardFooter>

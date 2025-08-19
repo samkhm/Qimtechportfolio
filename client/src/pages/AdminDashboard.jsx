@@ -18,6 +18,7 @@ export default function AdminDashboard(){
     const [skillQuery, setSkillQuery] = useState("");
     const [hobby, setHobby] = useState([]);
     const [hobbyQuery, setHobbyQuery] = useState("");
+    const [testy, setTesty] = useState([]);
     
 
     //loading users
@@ -232,7 +233,7 @@ export default function AdminDashboard(){
         try {
             const res = await API.get(`/admin_operations/hobby?search=${encodeURIComponent(hobbyQuery)}`);
             setHobby(res.data);
-            console.log("Hbs", res.data);
+           
             
         } catch (error) {
             console.log("Error fetching hobbies", error);
@@ -266,12 +267,25 @@ export default function AdminDashboard(){
         }
     }
 
+    //load messages
+            const loadTestimony = async () =>{
+        try {
+            const res = await API.get("/admin_operations/testimony");
+            setTesty(res.data);
+           
+            
+        } catch (error) {
+            console.log("Fetching Testimny error", error);
+            
+        }
+    }
         useEffect(() =>{
         loadUser();
         loadProjects();
         loadServices();
         loadSkills();
         loadHobby();
+        loadTestimony();
          }, []);
 
     return(
@@ -284,7 +298,8 @@ export default function AdminDashboard(){
                 query={query} setQuery={setQuery} project={project} deleteProject={deleteProject} updateProject={updateProject} toggleCompleted={toggleCompleted} 
                 service ={service} createService={createService} updateService={updateService} deleteService={deleteService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery}
                 skill={skill} createSkill={createSkill} updateSkill={updateSkill} deleteSkill={deleteSkill} skillQuery={skillQuery} setSkillQuery={setSkillQuery}
-                hobby={hobby} createHobby={createHobby} updateHobby={updateHobby} deleteHobby={deleteHobby} hobbyQuery={hobbyQuery} setHobbyQuery={setHobbyQuery}/>
+                hobby={hobby} createHobby={createHobby} updateHobby={updateHobby} deleteHobby={deleteHobby} hobbyQuery={hobbyQuery} setHobbyQuery={setHobbyQuery}
+                testy={testy}/>
             </div>
         </div>
     )
