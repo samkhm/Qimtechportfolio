@@ -115,7 +115,7 @@ export default function Login() {
             to="/home"
             className="flex items-center gap-1 text-zinc-500 hover:text-blue-600 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Back
+            <ArrowLeft className="w-4 h-4" />
           </Link>
           <p className="text-zinc-600 dark:text-zinc-300">
             Don't have an account?{" "}
