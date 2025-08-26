@@ -1,33 +1,32 @@
 import { Card, CardContent } from "@/components/ui/card";
-
-const testimonials = [
-  {
-    name: "Sarah Johnson",
-    text: "This service completely transformed our business operations. The team was professional, efficient, and delivered beyond our expectations."
-  },
-  {
-    name: "Michael Chen",
-    text: "Outstanding quality and attention to detail. I couldn't be happier with the results. Highly recommend to anyone looking for excellence."
-  },
-  {
-    name: "Emily Rodriguez",
-    text: "The level of customer service is unmatched. They went above and beyond to ensure everything was perfect. Truly exceptional work."
-  },
-  {
-    name: "David Thompson",
-    text: "Professional, reliable, and incredibly talented. The entire process was smooth from start to finish. Will definitely work with them again."
-  },
-  {
-    name: "Lisa Wang",
-    text: "Exceeded all my expectations! The attention to detail and commitment to quality is remarkable. Best decision I've made for my business."
-  },
-  {
-    name: "James Miller",
-    text: "Innovative solutions and exceptional execution. The team really understands their craft and delivers results that make a real difference."
-  }
-];
+import API from "@/services/api";
+import { useState, useEffect } from "react";
 
 export default function Testimonials() {
+ const [testimonies, setTestimonies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadTestimonies = async () =>{
+    try {
+      const res = await API.get('/admin_operations/testimony');
+      setTestimonies(res.data);
+      
+      
+    } catch (error) {
+      console.log(error);
+      
+    }finally{
+      setLoading(false);
+
+    }
+  }
+useEffect(() => {
+  loadTestimonies();
+
+}, [])
+
+const approvedTestimony = testimonies.filter(t => t.approved === true);
+
   return (
     <div className="max-w-screen" id="testimonials">
       <div className="py-16 bg-background overflow-hidden flex items-center justify-center dark:text-white" >
@@ -52,19 +51,27 @@ export default function Testimonials() {
     aria-label="Client Testimonials"
   >
     <div className="flex">
-      {[...testimonials, ...testimonials].map((testimonial, index) => (
+
+      {
+        loading ? (
+          <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse ml-90">
+            Loading testimonies...
+          </p>          
+        ):(
+
+          approvedTestimony.map((test) => (
         <Card
-          key={`${testimonial.name}-${index}`}
+          key={test._id}
           className="flex-shrink-0 w-80 mx-4 bg-card border-none shadow-lg hover:shadow-xl transition-shadow duration-300"
         >
           <CardContent className="p-6">
             <blockquote className="text-testimonial-text leading-relaxed mb-4 text-sm font-medium">
-              “{testimonial.text}”
+              “{test.message}”
             </blockquote>
             <div className="flex items-center">
               <div className="w-12 h-12 bg-testimonial-accent rounded-full flex items-center justify-center mr-3">
                 <span className="text-primary-foreground font-bold text-lg">
-                  {testimonial.name
+                  {test.first_name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
@@ -72,7 +79,7 @@ export default function Testimonials() {
               </div>
               <div>
                 <h4 className="font-semibold text-testimonial-text">
-                  {testimonial.name}
+                  {test.first_name}
                 </h4>
                 <p className="text-testimonial-muted text-sm">
                   Verified Client
@@ -81,7 +88,13 @@ export default function Testimonials() {
             </div>
           </CardContent>
         </Card>
-      ))}
+      ))
+
+        )
+      }
+
+
+
     </div>
   </div>
 </div>

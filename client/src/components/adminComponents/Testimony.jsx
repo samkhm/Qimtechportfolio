@@ -1,7 +1,7 @@
 import TestimonyCard from "./TestimonyCard";
 
 export default function Testimony({ testy, deleteTest, updateTesty, approveTest }) {
-  
+ 
       return (
     <div className="max-w-5xl mx-auto p-4">
       
@@ -25,6 +25,8 @@ export default function Testimony({ testy, deleteTest, updateTesty, approveTest 
           <p className="text-gray-500 dark:text-gray-400">No Testimonies found</p>
         </div>
       )}
+
+
     </div>
   );
 }
