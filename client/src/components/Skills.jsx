@@ -12,6 +12,7 @@ export default function Skills() {
       const res = await API.get('admin_operations/skills');
       setSkills(res.data);
     } catch (error) {
+      console.log("Skills fetching erro", error)
       
     }finally{
       setLoading(false);
