@@ -1,16 +1,30 @@
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import API from "@/services/api";
+import { useState, useEffect } from "react";
 
 export default function Services() {
-  const myServices = [
-    { key: "web1", service: "Web Design" },
-    { key: "web2", service: "Frontend Development" },
-    { key: "web3", service: "Backend APIs" },
-    { key: "web4", service: "Database Integration" },
-    { key: "web5", service: "Responsive UI" },
-    { key: "web6", service: "Performance Optimization" },
-    {key:"seo", service: "Search Engine Optimization"}
-  ];
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+const loadServices = async () =>{
+  try {
+    const res = await API.get('admin_operations/services');
+    setServices(res.data);
+    
+  } catch (error) {
+    console.log(error);
+    
+  }finally{
+    setLoading(false);
+  }
+}
+
+
+  useEffect(() =>{
+    loadServices();
+
+  }, []);
 
   return (
     <div className="w-full flex items-center justify-center">
@@ -46,6 +60,7 @@ export default function Services() {
         </motion.div>
 
         {/* Service Cards */}
+      
         <motion.div
           className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-5"
           initial="hidden"
@@ -53,9 +68,15 @@ export default function Services() {
           transition={{ staggerChildren: 0.2 }}
           viewport={{ once: true }}
         >
-          {myServices.map((s) => (
+            {
+          loading ? (
+            <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse">
+            Loading services...
+          </p>
+          ) : (
+            services.map((s) => (
             <motion.div
-              key={s.key}
+              key={s._id}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -69,11 +90,15 @@ export default function Services() {
                 hover:shadow-2xl hover:bg-[rgba(20,46,51,1)] hover:scale-105"
               >
                 <h3 className="text-3xl font-bold mb-2 text-[rgb(66,153,170)] group-hover:text-white transition-colors duration-300">
-                  {s.service}
+                  {s.title}
                 </h3>
               </Card>
             </motion.div>
-          ))}
+          ))
+            
+          )
+        }
+          
         </motion.div>
       </motion.div>
     </div>

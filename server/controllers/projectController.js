@@ -1,12 +1,37 @@
 const Project = require("../models/Projects");
 
 //api/rooms
+function isValidImageUrl(url) {
+  try {
+    const u = new URL(url);
+    // Allow http/https only
+    if (!["http:", "https:"].includes(u.protocol)) return false;
+
+    // Optional: check extension (basic sanity check, not bulletproof)
+    return /\.(jpg|jpeg|png|gif|webp|avif)$/i.test(u.pathname);
+  } catch {
+    return false;
+  }
+}
+
 exports.createProject = async (req, res) => {
   try {
-    const { title,  imageLink, liveLink, githubLink} = req.body;
+    let { title, imageLink, liveLink, githubLink } = req.body;
+
+    // cleanup
+    title = title?.trim();
+    imageLink = imageLink?.trim();
+    liveLink = liveLink?.trim();
+    githubLink = githubLink?.trim();
 
     if (!title) {
       return res.status(400).json({ message: "Title is required" });
+    }
+
+    if (imageLink && !isValidImageUrl(imageLink)) {
+      return res.status(400).json({ 
+        message: "Please provide a valid image URL (jpg, png, webp, etc.)" 
+      });
     }
 
     const projectExist = await Project.findOne({ title });
@@ -14,22 +39,22 @@ exports.createProject = async (req, res) => {
       return res.status(409).json({ message: "Title already exists" });
     }
 
-const project = await Project.create({
-      title, 
+    const project = await Project.create({
+      title,
       owner: req.user.id,
-      imageLink, 
+      imageLink,
       liveLink,
-      githubLink
-           
+      githubLink,
     });
 
     return res.status(201).json(project);
 
   } catch (error) {
-    console.error("Error creating hobby:", error);
+    console.error("Error creating project:", error);
     return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 //api/hobbies/getAllHobbies
 exports.getAllProjects = async (req, res) => {

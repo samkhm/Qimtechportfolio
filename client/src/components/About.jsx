@@ -3,8 +3,32 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/lightswind/button";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
+import API from "@/services/api";
+import { useState, useEffect } from "react";
+import { fa } from "zod/v4/locales";
 
 export default function About() {
+
+  const [hobby, setHobby] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadHobbies = async () =>{
+    try {
+      const res = await API.get("admin_operations/hobby");
+      setHobby(res.data);
+      
+    } catch (error) {
+      console.log("Fetching Testimny error", error);      
+    }finally{
+      setLoading(false);
+
+    }
+  }
+
+  useEffect(() => {
+    loadHobbies();
+  }, []);
+
   const expExperience = [
     { key: "years", number: 1, desc: "Years Experience" },
     { key: "project", number: 30, desc: "Projects Done" },
@@ -12,15 +36,9 @@ export default function About() {
     
   ];
 
-  const hobbIes = [
-    { key: "coding", hobby: "Coding" },
-    { key: "ux", hobby: "UX Research" },
-    { key: "dev", hobby: "DevOps" },
-    {key:"gd", hobby: "Graphic Design"},
-    {key:"pj", hobby:"Project Manage"},
-    {key:"ms", hobby:"Music"},
-    {key:"pg", hobby:"Photography"}
-  ];
+
+
+ 
 
   return (
     <div id="about" className="w-full flex flex-col items-center justify-center">
@@ -168,21 +186,38 @@ export default function About() {
         <h3 className="text-xl font-bold p-3 border-b-[1px] border-b-[rgb(66,153,170)] mb-2 w-fit">Hobbies</h3>
         <h2 className="text-xl font-semibold" style={{ color: "rgb(66, 153, 170)" }}>Things I Love To Do</h2>
         <div className="flex flex-wrap p-5 gap-5 max-w-200 items-center justify-center">
-          {hobbIes.map((h, i) => (
+
+      {
+        loading ? (
+          <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse">
+            Loading hobbies...
+          </p>
+
+        ) : (
+          hobby.map((h, i) => (
             <motion.div
-              key={h.key}
+              key={h._id}
+              
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
               viewport={{ once: true }}
             >
+            
+
               <Button
                 className="flex p-5 w-40 bg-gray-100 text-[rgb(66,153,170)] border-b-2 border-b-[rgb(66,153,170)] hover:bg-[rgba(20,46,51,1)] hover:text-white"
               >
-                {h.hobby}
+                {h.title}
               </Button>
+
             </motion.div>
-          ))}
+          ))
+        )
+      }
+
+          
+
         </div>
       </motion.div>
     </div>

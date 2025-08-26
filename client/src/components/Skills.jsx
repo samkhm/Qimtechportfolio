@@ -1,18 +1,26 @@
 import Image from "@/assets/website.jpg";
 import { motion } from "framer-motion";
+import API from "@/services/api";
+import { useEffect, useState } from "react";
 
 export default function Skills() {
-  const sKills = [
-    { key: "js", skill: "Java Script" },
-    { key: "react1", skill: "React" },
-    { key: "node", skill: "Node.js" },
-    { key: "ex", skill: "Express" },
-    { key: "ph", skill: "PhP" },
-    { key: "py", skill: "Python" },
-    { key: "sql", skill: "SQL" },
-    { key: "mongo", skill: "MongoDB" },
-    { key: "tailwind", skill: "Tailwind CSS" },
-  ];
+  const [skills, setSkills] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadSkills = async () =>{
+    try {
+      const res = await API.get('admin_operations/skills');
+      setSkills(res.data);
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setLoading(false);
+    }
+  }
+      useEffect(() =>{
+        loadSkills();
+
+      }, []);
 
   return (
     <div id="skills" className="flex flex-wrap p-10 items-center justify-center">
@@ -60,9 +68,16 @@ export default function Skills() {
 
         {/* Skills Bubbles */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
-          {sKills.map((s, i) => (
+          {
+            loading ? (
+          <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse">
+            Loading skills...
+          </p>              
+            ) :
+            (
+          skills.map((s, i) => (
             <motion.div
-              key={s.key}
+              key={s._id}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.1 * i }}
@@ -71,9 +86,12 @@ export default function Skills() {
                 bg-[rgba(20,46,51,1)] text-white flex items-center justify-center 
                 p-1 text-sm text-center"
             >
-              {s.skill}
+              {s.title}
             </motion.div>
-          ))}
+          ))
+            )
+          }
+         
         </div>
       </section>
 

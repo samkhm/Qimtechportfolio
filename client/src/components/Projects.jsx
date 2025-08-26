@@ -8,70 +8,88 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Github, ExternalLink } from "lucide-react";
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import API from "@/services/api";
 
 const placeholder = "/placeholder.svg";
 
 export default function Projects() {
+  const [project, setProject] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [visibleCount, setVisibleCount] = useState(3);
 
-  const projects = [
-    {
-      key: "analytics-dashboard",
-      title: "Analytics Dashboard",
-      image: placeholder,
-      githubLink: "https://github.com/yourname/analytics-dashboard",
-      liveLink: "https://yourdomain.com/analytics",
-      status: "complete",
-      tech: ["Next.js", "Tailwind", "Chart.js"],
-    },
-    {
-      key: "ecommerce-ui",
-      title: "E‑commerce UI Kit",
-      image: placeholder,
-      githubLink: "https://github.com/yourname/ecommerce-ui",
-      liveLink: "https://yourdomain.com/shop",
-      status: "inprogress",
-      tech: ["React", "Tailwind", "Framer Motion"],
-    },
-    {
-      key: "realtime-chat",
-      title: "Realtime Chat App",
-      image: placeholder,
-      githubLink: "https://github.com/yourname/realtime-chat",
-      liveLink: "https://yourdomain.com/chat",
-      status: "complete",
-      tech: ["Socket.io", "Node.js", "MongoDB"],
-    },
-    {
-      key: "portfolio-site",
-      title: "Personal Portfolio",
-      image: placeholder,
-      githubLink: "https://github.com/yourname/portfolio",
-      liveLink: "https://yourdomain.com/portfolio",
-      status: "complete",
-      tech: ["React", "TailwindCSS"],
-    },
-    {
-      key: "blog-platform",
-      title: "Markdown Blog Platform",
-      image: placeholder,
-      githubLink: "https://github.com/yourname/blog-platform",
-      liveLink: "https://yourdomain.com/blog",
-      status: "inprogress",
-      tech: ["Next.js", "MDX", "Tailwind"],
-    },
-  ];
+  const loadProjects = async () =>{
+    try {
+      const res = await API.get('admin_operations/project');
+      setProject(res.data);
+      
+    } catch (error) {
+      console.log(error);
+      
+    }finally{
+      setLoading(false);
+    }
+  }
 
-  const statusVariant = {
-    complete: { label: "Complete", variant: "secondary" },
-    inprogress: { label: "In Progress", variant: "outline" },
-  };
+  useEffect(() =>{
+    loadProjects();
+  }, []);
+  
+
+  // const projects = [
+  //   {
+  //     key: "analytics-dashboard",
+  //     title: "Analytics Dashboard",
+  //     image: placeholder,
+  //     githubLink: "https://github.com/yourname/analytics-dashboard",
+  //     liveLink: "https://yourdomain.com/analytics",
+  //     status: "complete",
+  //     tech: ["Next.js", "Tailwind", "Chart.js"],
+  //   },
+  //   {
+  //     key: "ecommerce-ui",
+  //     title: "E‑commerce UI Kit",
+  //     image: placeholder,
+  //     githubLink: "https://github.com/yourname/ecommerce-ui",
+  //     liveLink: "https://yourdomain.com/shop",
+  //     status: "inprogress",
+  //     tech: ["React", "Tailwind", "Framer Motion"],
+  //   },
+  //   {
+  //     key: "realtime-chat",
+  //     title: "Realtime Chat App",
+  //     image: placeholder,
+  //     githubLink: "https://github.com/yourname/realtime-chat",
+  //     liveLink: "https://yourdomain.com/chat",
+  //     status: "complete",
+  //     tech: ["Socket.io", "Node.js", "MongoDB"],
+  //   },
+  //   {
+  //     key: "portfolio-site",
+  //     title: "Personal Portfolio",
+  //     image: placeholder,
+  //     githubLink: "https://github.com/yourname/portfolio",
+  //     liveLink: "https://yourdomain.com/portfolio",
+  //     status: "complete",
+  //     tech: ["React", "TailwindCSS"],
+  //   },
+  //   {
+  //     key: "blog-platform",
+  //     title: "Markdown Blog Platform",
+  //     image: placeholder,
+  //     githubLink: "https://github.com/yourname/blog-platform",
+  //     liveLink: "https://yourdomain.com/blog",
+  //     status: "inprogress",
+  //     tech: ["Next.js", "MDX", "Tailwind"],
+  //   },
+  // ];
+
+  
 
   const filteredProjects =
-    filter === "all" ? projects : projects.filter((p) => p.status === filter);
+    filter === "all" ? project : project.filter((p) => p.status === filter);
 
   const visibleProjects = filteredProjects.slice(0, visibleCount);
 
@@ -159,9 +177,16 @@ export default function Projects() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           <AnimatePresence>
-            {visibleProjects.map((proj) => (
+
+            { loading ? (
+          <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse">
+            Loading projects...
+          </p>
+
+            ):(
+              visibleProjects.map((proj) => (
               <motion.article
-                key={proj.key}
+                key={proj._id}
                 variants={cardVariants}
                 initial="hidden"
                 whileInView="visible"
@@ -173,16 +198,25 @@ export default function Projects() {
                 <Card className="flex flex-col h-full shadow-md transition-shadow dark:shadow-white/10 hover:shadow-xl">
                   <CardHeader className="p-0">
                     <div className="relative aspect-[16/9]">
-                      <img
-                        src={proj.image}
-                        alt={`${proj.title} project thumbnail`}
-                        loading="lazy"
-                        className="h-full w-full object-cover rounded-t-md"
-                      />
-                      <div className="absolute left-3 top-3">
-                        <Badge variant={statusVariant[proj.status].variant}>
-                          {statusVariant[proj.status].label}
-                        </Badge>
+                  <img
+                    src={proj.imageLink}
+                    alt={proj.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover rounded-t-md"
+                  />
+
+                      <div className="absolute right-3 top-3">
+                  <Badge
+                    className={`px-3 py-1 text-sm rounded-full font-semibold shadow-md 
+                      ${proj.completed 
+                        ? "bg-green-600 text-white animate-pulse" 
+                        : "bg-yellow-500 text-white animate-bounce"
+                      }`}
+                  >
+                    {proj.completed ? "Complete 🎉" : "In Progress 🚧"}
+                  </Badge>
+
+
                       </div>
                     </div>
                   </CardHeader>
@@ -213,7 +247,13 @@ export default function Projects() {
                   </CardFooter>
                 </Card>
               </motion.article>
-            ))}
+            ))
+
+            )
+            }
+          
+            
+
           </AnimatePresence>
         </motion.div>
 
