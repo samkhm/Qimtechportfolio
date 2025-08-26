@@ -20,84 +20,39 @@ export default function Projects() {
   const [filter, setFilter] = useState("all");
   const [visibleCount, setVisibleCount] = useState(3);
 
-  const loadProjects = async () =>{
+  const loadProjects = async () => {
     try {
-      const res = await API.get('admin_operations/project');
+      const res = await API.get("admin_operations/project");
       setProject(res.data);
-      
     } catch (error) {
-      console.log(error);
-      
-    }finally{
+      console.error(error);
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
-  useEffect(() =>{
+  useEffect(() => {
     loadProjects();
   }, []);
-  
 
-  // const projects = [
-  //   {
-  //     key: "analytics-dashboard",
-  //     title: "Analytics Dashboard",
-  //     image: placeholder,
-  //     githubLink: "https://github.com/yourname/analytics-dashboard",
-  //     liveLink: "https://yourdomain.com/analytics",
-  //     status: "complete",
-  //     tech: ["Next.js", "Tailwind", "Chart.js"],
-  //   },
-  //   {
-  //     key: "ecommerce-ui",
-  //     title: "E‑commerce UI Kit",
-  //     image: placeholder,
-  //     githubLink: "https://github.com/yourname/ecommerce-ui",
-  //     liveLink: "https://yourdomain.com/shop",
-  //     status: "inprogress",
-  //     tech: ["React", "Tailwind", "Framer Motion"],
-  //   },
-  //   {
-  //     key: "realtime-chat",
-  //     title: "Realtime Chat App",
-  //     image: placeholder,
-  //     githubLink: "https://github.com/yourname/realtime-chat",
-  //     liveLink: "https://yourdomain.com/chat",
-  //     status: "complete",
-  //     tech: ["Socket.io", "Node.js", "MongoDB"],
-  //   },
-  //   {
-  //     key: "portfolio-site",
-  //     title: "Personal Portfolio",
-  //     image: placeholder,
-  //     githubLink: "https://github.com/yourname/portfolio",
-  //     liveLink: "https://yourdomain.com/portfolio",
-  //     status: "complete",
-  //     tech: ["React", "TailwindCSS"],
-  //   },
-  //   {
-  //     key: "blog-platform",
-  //     title: "Markdown Blog Platform",
-  //     image: placeholder,
-  //     githubLink: "https://github.com/yourname/blog-platform",
-  //     liveLink: "https://yourdomain.com/blog",
-  //     status: "inprogress",
-  //     tech: ["Next.js", "MDX", "Tailwind"],
-  //   },
-  // ];
+  // ✅ Fixed filter options
+  const statuses = ["all", "completed", "inprogress"];
 
-  
-
+  // ✅ Apply filter using completed (boolean)
   const filteredProjects =
-    filter === "all" ? project : project.filter((p) => p.status === filter);
+    filter === "all"
+      ? project
+      : project.filter((p) =>
+          filter === "completed" ? p.completed : !p.completed
+        );
 
   const visibleProjects = filteredProjects.slice(0, visibleCount);
 
- const handleLoadMore = () => {
-  setVisibleCount((prev) => prev + 3);
-};
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 3);
+  };
 
-
+  // ✅ Animation configs
   const easing = [0.25, 0.8, 0.25, 1];
 
   const fadeInUp = {
@@ -126,11 +81,15 @@ export default function Projects() {
   };
 
   return (
-    <div className="max-w-screen p-5 mr-5 ml-5 mb-10 bg-gray-100/80 rounded" id="projects">
+    <div
+      className="max-w-screen p-5 mr-5 ml-5 mb-10 bg-gray-100/80 rounded"
+      id="projects"
+    >
       <section
         aria-labelledby="projects-heading"
         className="container py-12 font-sans antialiased"
       >
+        {/* Heading + Filter */}
         <motion.div
           className="mb-8 text-center"
           variants={fadeInUp}
@@ -141,7 +100,6 @@ export default function Projects() {
           <motion.h2
             id="projects-heading"
             className="text-3xl md:text-4xl font-extrabold tracking-tight"
-            
           >
             Projects
           </motion.h2>
@@ -150,8 +108,9 @@ export default function Projects() {
             performance, and accessibility. Explore the code and try live demos.
           </motion.p>
 
+          {/* Filter Buttons */}
           <div className="mt-4 flex justify-center gap-4">
-            {["all", "complete", "inprogress"].map((status) => (
+            {statuses.map((status) => (
               <motion.button
                 key={status}
                 className={`px-4 py-2 rounded-md border font-medium transition ${
@@ -166,97 +125,128 @@ export default function Projects() {
                   setVisibleCount(3);
                 }}
               >
-                {status.charAt(0).toUpperCase() + status.slice(1)}
+                {status === "all"
+                  ? "All"
+                  : status === "completed"
+                  ? "Completed"
+                  : "In Progress"}
               </motion.button>
             ))}
           </div>
         </motion.div>
 
+        {/* Projects Grid */}
         <motion.div
           layout
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           <AnimatePresence>
-
-            { loading ? (
-          <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse">
-            Loading projects...
-          </p>
-
-            ):(
+            {/* Loader */}
+            {loading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-64 bg-gray-200 rounded-md animate-pulse"
+                />
+              ))
+            ) : filteredProjects.length === 0 ? (
+              <p className="text-lg font-medium text-gray-600 col-span-full text-center">
+                No projects available.
+              </p>
+            ) : (
               visibleProjects.map((proj) => (
-              <motion.article
-                key={proj._id}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                exit="exit"
-                viewport={{ once: false, amount: 0.2 }}
-                whileHover={{ scale: 1.02 }}
-                className="group p-10"
-              >
-                <Card className="flex flex-col h-full shadow-md transition-shadow dark:shadow-white/10 hover:shadow-xl">
-                  <CardHeader className="p-0">
-                    <div className="relative aspect-[16/9]">
-                  <img
-                    src={proj.imageLink}
-                    alt={proj.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover rounded-t-md"
-                  />
-
-                      <div className="absolute right-3 top-3">
-                  <Badge
-                    className={`px-3 py-1 text-sm rounded-full font-semibold shadow-md 
-                      ${proj.completed 
-                        ? "bg-green-600 text-white animate-pulse" 
-                        : "bg-yellow-500 text-white animate-bounce"
-                      }`}
-                  >
-                    {proj.completed ? "Complete 🎉" : "In Progress 🚧"}
-                  </Badge>
-
-
+                <motion.article
+                  key={proj._id}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  exit="exit"
+                  viewport={{ once: false, amount: 0.2 }}
+                  whileHover={{ scale: 1.02 }}
+                  className="group p-4"
+                >
+                  <Card className="flex flex-col h-full shadow-md transition-shadow dark:shadow-white/10 hover:shadow-xl">
+                    <CardHeader className="p-0">
+                      <div className="relative aspect-[16/9]">
+                        <img
+                          src={proj.imageLink || placeholder}
+                          alt={`Preview of ${proj.title}`}
+                          loading="lazy"
+                          className="h-full w-full object-cover rounded-t-md"
+                        />
+                        <div className="absolute right-3 top-3">
+                          <Badge
+                            className={`px-3 py-1 text-sm rounded-full font-semibold shadow-md 
+                              ${
+                                proj.completed
+                                  ? "bg-green-600 text-white animate-pulse"
+                                  : "bg-yellow-500 text-white animate-bounce"
+                              }`}
+                          >
+                            {proj.completed
+                              ? "Completed 🎉"
+                              : "In Progress 🚧"}
+                          </Badge>
+                        </div>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-4 flex-grow">
-                    <CardTitle className="text-base md:text-lg lg:text-xl font-semibold">
-                      {proj.title}
-                    </CardTitle>
-                  </CardContent>
-                  <CardFooter className="flex flex-col sm:flex-row gap-5 px-4 pb-4">
-                    <Button asChild variant="secondary" className="w-fit">
-                      <a
-                        href={proj.githubLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Github className="mr-2 h-4 w-4" /> GitHub
-                      </a>
-                    </Button>
-                    <Button asChild className="w-fit bg-red-600 text-white">
-                      <a
-                        href={proj.liveLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="mr-2 h-4 w-4" /> Live
-                      </a>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </motion.article>
-            ))
+                    </CardHeader>
+                    <CardContent className="pt-4 flex-grow">
+                      <CardTitle className="text-base md:text-lg lg:text-xl font-semibold">
+                        {proj.title}
+                      </CardTitle>
 
-            )
-            }
-          
-            
-
+                      {/* ✅ Tech Stack Badges */}
+                      {proj.tech && proj.tech.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {proj.tech.map((tech, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="text-xs px-2 py-1"
+                            >
+                              {tech}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                    <CardFooter className="flex flex-col sm:flex-row gap-5 px-4 pb-4">
+                      <Button
+                        asChild
+                        variant="secondary"
+                        className="w-fit"
+                        aria-label={`View ${proj.title} on GitHub`}
+                      >
+                        <a
+                          href={proj.githubLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Github className="mr-2 h-4 w-4" /> GitHub
+                        </a>
+                      </Button>
+                      <Button
+                        asChild
+                        className="w-fit bg-red-600 text-white"
+                        aria-label={`View live demo of ${proj.title}`}
+                      >
+                        <a
+                          href={proj.liveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="mr-2 h-4 w-4" /> Live
+                        </a>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </motion.article>
+              ))
+            )}
           </AnimatePresence>
         </motion.div>
 
+        {/* Load More Button */}
         {visibleCount < filteredProjects.length && (
           <motion.div
             className="mt-6 flex justify-center sm:justify-end"
