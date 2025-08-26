@@ -15,7 +15,7 @@ import API from "@/services/api";
 const placeholder = "/placeholder.svg";
 
 export default function Projects() {
-  const [project, setProject] = useState([]);
+  const [project = [], setProject] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [visibleCount, setVisibleCount] = useState(3);

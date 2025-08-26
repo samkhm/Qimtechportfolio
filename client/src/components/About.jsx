@@ -9,7 +9,7 @@ import { fa } from "zod/v4/locales";
 
 export default function About() {
 
-  const [hobby, setHobby] = useState([]);
+  const [hobby = [], setHobby] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const loadHobbies = async () =>{

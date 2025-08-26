@@ -4,7 +4,7 @@ import API from "@/services/api";
 import { useState, useEffect } from "react";
 
 export default function Services() {
-  const [services, setServices] = useState([]);
+  const [services = [], setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
 const loadServices = async () =>{

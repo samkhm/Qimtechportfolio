@@ -3,7 +3,7 @@ import API from "@/services/api";
 import { useState, useEffect } from "react";
 
 export default function Testimonials() {
- const [testimonies, setTestimonies] = useState([]);
+ const [testimonies = [], setTestimonies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const loadTestimonies = async () =>{

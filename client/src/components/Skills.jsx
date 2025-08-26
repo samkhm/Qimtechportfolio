@@ -4,7 +4,7 @@ import API from "@/services/api";
 import { useEffect, useState } from "react";
 
 export default function Skills() {
-  const [skills, setSkills] = useState([]);
+  const [skills = [], setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const loadSkills = async () =>{
