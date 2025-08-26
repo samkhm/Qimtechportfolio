@@ -4,7 +4,7 @@ const { createHobby, getAllHobbies, updateHobby, deleteHobby} = require("../cont
 const { createProject, getAllProjects, updateProject, deleteProject, toggleCompleted} = require("../controllers/projectController");
 const { createService, getAllServices, updateService, deleteService} = require("../controllers/serviceController");
 const { createSkill, getAllSkills, updateSkill, deleteSkill} = require("../controllers/skillsController");
-const { createTestimony, getAllTestimonies, deleteTestimonies} = require("../controllers/testimonialsController");
+const { createTestimony, getAllTestimonies, deleteTestimonies, approveTestimony} = require("../controllers/testimonialsController");
 const router = express.Router();
 
 router.post("/hobby", protect, authorize(["admin"]), createHobby );
@@ -30,6 +30,7 @@ router.delete("/skills/:id", protect, authorize(["admin"]), deleteSkill);
 
 router.get("/testimony", protect, authorize(["admin"]), getAllTestimonies);
 router.delete("/testimony/:id", protect, authorize(["admin"]), deleteTestimonies);
+router.put("/testimony/:id", protect, authorize(["admin"]), approveTestimony)
 
 
 module.exports = router;

@@ -61,4 +61,20 @@ exports.deleteTestimonies = async (req, res) =>{
     }
 }
 
+exports.approveTestimony = async (req, res) =>{
+  try {
+    const approvedTesty = await Testimony.findByIdAndUpdate(
+      req.params.id,
+      { approved : req.body.approved },
+       { new: true}
+    );
 
+    if(!approvedTesty) return res.status(404).json({ error: "No Testimony found"});
+
+    res.json(approvedTesty);
+    
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+    
+  }
+}

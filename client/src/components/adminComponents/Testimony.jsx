@@ -1,6 +1,6 @@
 import TestimonyCard from "./TestimonyCard";
 
-export default function Testimony({ testy, deleteTesty, updateTesty, approveTest }) {
+export default function Testimony({ testy, deleteTest, updateTesty, approveTest }) {
   
       return (
     <div className="max-w-5xl mx-auto p-4">
@@ -14,7 +14,8 @@ export default function Testimony({ testy, deleteTesty, updateTesty, approveTest
             <TestimonyCard
               key={test._id}
               testy={test}
-              deleteTesty={deleteTesty}
+              deleteTest={deleteTest}
+              approveTest={() => approveTest(test._id, test.approved)}
             />
           ))}
 

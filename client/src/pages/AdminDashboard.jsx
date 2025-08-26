@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import API from "@/services/api";
 import { FaAcquisitionsIncorporated } from "react-icons/fa";
 import { id } from "zod/v4/locales";
+import { TestTubes } from "lucide-react";
 
 export default function AdminDashboard(){
     const [activeSection, setActiveSection] = useState('home');
@@ -279,6 +280,34 @@ export default function AdminDashboard(){
             
         }
     }
+
+    const approveTest = async (id, approved) => {
+        try {
+            const res = await API.put(`/admin_operations/testimony/${id}`, {
+                approved : !approved
+            });
+            setTesty(prev => prev.map(test => test._id === id ? res.data : test));
+            
+        } catch (error) {
+            console.log("Aprroving Testy error", error);
+            
+        }
+        
+    }
+
+    const deleteTest = async (id) =>{
+        try {
+            const res = await API.delete(`admin_operations/testimony/${id}`);
+            setTesty(prev => prev.filter(test => test._id !== id));
+            const message = res?.data?.message || "Message deleted";
+            toast.success(message);
+            
+        } catch (error) {
+            const message = error?.data?.response?.message || "Failed to delete";
+            toast.error(message);
+            
+        }
+    }
         useEffect(() =>{
         loadUser();
         loadProjects();
@@ -299,7 +328,7 @@ export default function AdminDashboard(){
                 service ={service} createService={createService} updateService={updateService} deleteService={deleteService} serviceQuery={serviceQuery} setServiceQuery={setServiceQuery}
                 skill={skill} createSkill={createSkill} updateSkill={updateSkill} deleteSkill={deleteSkill} skillQuery={skillQuery} setSkillQuery={setSkillQuery}
                 hobby={hobby} createHobby={createHobby} updateHobby={updateHobby} deleteHobby={deleteHobby} hobbyQuery={hobbyQuery} setHobbyQuery={setHobbyQuery}
-                testy={testy}/>
+                testy={testy} approveTest={approveTest} deleteTest={deleteTest}/>
             </div>
         </div>
     )
