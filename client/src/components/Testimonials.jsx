@@ -71,15 +71,13 @@ const approvedTestimony = testimonies.filter(t => t.approved === true);
             <div className="flex items-center">
               <div className="w-12 h-12 bg-testimonial-accent rounded-full flex items-center justify-center mr-3">
                 <span className="text-primary-foreground font-bold text-lg">
-                  {test.first_name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
+                  {`${test.first_name?.[0] || ""}${test.last_name?.[0] || ""}`}
+
                 </span>
               </div>
               <div>
                 <h4 className="font-semibold text-testimonial-text">
-                  {test.first_name}
+                  {`${test.first_name}  ${test.last_name}`}
                 </h4>
                 <p className="text-testimonial-muted text-sm">
                   Verified Client
