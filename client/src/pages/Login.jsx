@@ -83,7 +83,7 @@ export default function Login() {
               : "text-zinc-500"
           }`}
         >
-          {message || "Enter your credentials to continue"}
+          {message || "Enter your credentials to continue."}
         </CardDescription>
       </CardHeader>
 
