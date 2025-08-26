@@ -12,7 +12,7 @@ export default function Skills() {
       const res = await API.get('admin_operations/skills');
       setSkills(res.data);
     } catch (error) {
-      console.log(error);
+      console.log("Failed to load skills",error);
     }finally{
       setLoading(false);
     }
