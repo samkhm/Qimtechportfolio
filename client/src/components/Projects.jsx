@@ -206,7 +206,8 @@ export default function Projects() {
                               <Badge
                                 key={index}
                                 variant="outline"
-                                className="text-xs px-2 py-1"
+                                   className="text-xs px-3 py-1 rounded-full font-semibold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 text-white shadow-md hover:scale-105 transition-transform duration-200"
+ 
                               >
                                 {tech}
                               </Badge>
