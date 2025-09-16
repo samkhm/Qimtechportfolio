@@ -36,61 +36,106 @@ export default function AdminDashboard(){
     }
     
     // creating of projects
-    const loadProjects = async () =>{
-        try {
-            const res = await API.get(`/admin_operations/project?search=${encodeURIComponent(query)}`);
-            setProject(res.data);
-            
-        } catch (error) {
-            console.log("Fetching project error", error);
-            
-        }
-    }   
+const loadProjects = async () => {
+    
+  try {
+    const res = await API.get(
+      `/admin_operations/project?search=${encodeURIComponent(query)}`
+    );
+console.log("Projects are", res.data);
+    // access res.data.projects instead of res.data
+    setProject(res.data.projects || []);
+    console.log("projects:", res.data.projects);
+  } catch (error) {
+    console.error("Fetching project error:", error);
+  }
+};
+  
 
-        const createProject = async (payload) => {
-        try {
-            const res = await API.post("/admin_operations/project", payload);
-            setProject(prev => [res.data, ...prev]);
+const createProject = async (newProject) => {
+  try {
+    // Convert to FormData
+    const formData = new FormData();
+    formData.append("title", newProject.title);
+    formData.append("githubLink", newProject.githubLink);
+    formData.append("liveLink", newProject.liveLink);
 
-            const message = res?.data?.message || "Project Created";
-            toast.success(message);
+    // Must match backend field name "file"
+    if (newProject.imageFile) {
+      formData.append("file", newProject.imageFile);
+    }
 
-        } catch (error) {
-            console.log("Error is", error);
-            const message = error?.response?.data?.message || "Project Failed!";
-            toast.error(message);
-        }
-        };
+    // Send POST request
+    const res = await API.post("/admin_operations/project", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-        const deleteProject = async (id) =>{
-            try {
-                await API.delete(`/admin_operations/project/${id}`);
-                setProject(prev => prev.filter(p => p._id !== id));
-                toast("Project deleted");
-                
-            } catch (error) {
-                console.log("Project deleting error", error);
-                
-            }
-        }
+    // Prepend the newly created project to state
+    setProject((prev) => [res.data.project, ...prev]);
+
+    toast.success(res?.data?.message || "Project Created");
+  } catch (error) {
+    console.error("Error creating project:", error);
+    toast.error(error?.response?.data?.message || "Project Failed!");
+  }
+};
+
+ const deleteProject = async (id) => {
+  try {
+    await API.delete(`/admin_operations/project/${id}`);
+    setProject(prev => prev.filter(p => p._id !== id));
+    toast.success("Project deleted");
+  } catch (error) {
+    console.log("Project deleting error", error);
+    toast.error("Failed to delete project");
+  }
+};
+
         
-        const updateProject = async (id, payload) => {
+const updateProject = async (id, payload) => {
+  try {
+    let res;
 
-            try {
-                
-                const res = await API.put(`/admin_operations/project/${id}`, payload);
-                setProject(prev => prev.map(p => p._id === id ? res.data : p));
-                toast.success(res?.data?.message ?? "Project Updated");            
-                               
-            } catch (error) {
-                console.error(error);
-                toast.error(error?.response?.data?.message || "Failed to update project");
-            }
-            };
+    // If payload is FormData (file upload)
+    if (payload instanceof FormData) {
+      res = await API.put(`/admin_operations/project/${id}`, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } else {
+      // Normal JSON payload
+      res = await API.put(`/admin_operations/project/${id}`, payload);
+    }
+
+    const updatedProject = res.data;
+
+    // ✅ Merge only updated fields
+    setProject((prev) =>
+      prev.map((p) => {
+        if (p._id === id) {
+          return { ...p, ...updatedProject };
+        }
+        return p;
+      })
+    );
+
+    toast.success(updatedProject?.message || "Project updated!");
+  } catch (error) {
+    console.error("Update Project Error:", error);
+    toast.error(error?.response?.data?.message || "Failed to update project");
+  }
+};
+
+
+
 
 
             const toggleCompleted = async (id, e) => {
-                
+                console.log("Toggle id", id);
+                                
                 const newCompleted = e.target.checked;
                 try {
                     const res = await API.put(`/admin_operations/project_complete/${id}`, {
@@ -98,7 +143,8 @@ export default function AdminDashboard(){
                     });
                     setProject(prev => prev.map(p => p._id === id ? res.data.project : p));
                 } catch (err) {
-                    console.error(err);
+                    
+                    console.log("Completion error", err)
                 }
                 };
 

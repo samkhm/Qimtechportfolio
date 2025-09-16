@@ -15,7 +15,7 @@ import API from "@/services/api";
 const placeholder = "/placeholder.svg";
 
 export default function Projects() {
-  const [project = [], setProject] = useState([]);
+  const [project, setProject] = useState([]); // ✅ removed default inside array
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [visibleCount, setVisibleCount] = useState(3);
@@ -23,7 +23,8 @@ export default function Projects() {
   const loadProjects = async () => {
     try {
       const res = await API.get("admin_operations/project");
-      setProject(res.data);
+      // ✅ Make sure response is in expected shape
+      setProject(res.data.projects || []); 
     } catch (error) {
       console.error(error);
     } finally {
@@ -35,10 +36,8 @@ export default function Projects() {
     loadProjects();
   }, []);
 
-  // ✅ Fixed filter options
   const statuses = ["all", "completed", "inprogress"];
 
-  // ✅ Apply filter using completed (boolean)
   const filteredProjects =
     filter === "all"
       ? project
@@ -52,7 +51,6 @@ export default function Projects() {
     setVisibleCount((prev) => prev + 3);
   };
 
-  // ✅ Animation configs
   const easing = [0.25, 0.8, 0.25, 1];
 
   const fadeInUp = {
@@ -141,7 +139,6 @@ export default function Projects() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           <AnimatePresence>
-            {/* Loader */}
             {loading ? (
               Array.from({ length: 3 }).map((_, i) => (
                 <div
@@ -154,99 +151,106 @@ export default function Projects() {
                 No projects available.
               </p>
             ) : (
-              visibleProjects.map((proj) => (
-                <motion.article
-                  key={proj._id}
-                  variants={cardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  exit="exit"
-                  viewport={{ once: false, amount: 0.2 }}
-                  whileHover={{ scale: 1.02 }}
-                  className="group p-4"
-                >
-                  <Card className="flex flex-col h-full shadow-md transition-shadow dark:shadow-white/10 hover:shadow-xl">
-                    <CardHeader className="p-0">
-                      <div className="relative aspect-[16/9]">
-                        <img
-                          src={proj.imageLink || placeholder}
-                          alt={`Preview of ${proj.title}`}
-                          loading="lazy"
-                          className="h-full w-full object-cover rounded-t-md"
-                        />
-                        <div className="absolute right-3 top-3">
-                          <Badge
-                            className={`px-3 py-1 text-sm rounded-full font-semibold shadow-md 
-                              ${
-                                proj.completed
-                                  ? "bg-green-600 text-white animate-pulse"
-                                  : "bg-yellow-500 text-white animate-bounce"
-                              }`}
-                          >
-                            {proj.completed
-                              ? "Completed 🎉"
-                              : "In Progress 🚧"}
-                          </Badge>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-4 flex-grow">
-                      <CardTitle className="text-base md:text-lg lg:text-xl font-semibold">
-                        {proj.title}
-                      </CardTitle>
+              visibleProjects.map((proj) => {
+                // ✅ FIX: Construct image URL correctly
+                const imageUrl = proj.imagePath
+                  ? proj.imagePath
+                  : proj.image
+                  ? `${API.defaults.baseURL}images/${proj.image}`
+                  : placeholder;
 
-                      {/* ✅ Tech Stack Badges */}
-                      {proj.tech && proj.tech.length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {proj.tech.map((tech, index) => (
+                return (
+                  <motion.article
+                    key={proj._id}
+                    variants={cardVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    exit="exit"
+                    viewport={{ once: false, amount: 0.2 }}
+                    whileHover={{ scale: 1.02 }}
+                    className="group p-4"
+                  >
+                    <Card className="flex flex-col h-full shadow-md transition-shadow dark:shadow-white/10 hover:shadow-xl">
+                      <CardHeader className="p-0">
+                        <div className="relative aspect-[16/9]">
+                          <img
+                            src={imageUrl}
+                            alt={`Preview of ${proj.title}`}
+                            loading="lazy"
+                            className="h-full w-full object-cover rounded-t-md"
+                          />
+                          <div className="absolute right-3 top-3">
                             <Badge
-                              key={index}
-                              variant="outline"
-                              className="text-xs px-2 py-1"
+                              className={`px-3 py-1 text-sm rounded-full font-semibold shadow-md 
+                                ${
+                                  proj.completed
+                                    ? "bg-green-600 text-white animate-pulse"
+                                    : "bg-yellow-500 text-white animate-bounce"
+                                }`}
                             >
-                              {tech}
+                              {proj.completed
+                                ? "Completed 🎉"
+                                : "In Progress 🚧"}
                             </Badge>
-                          ))}
+                          </div>
                         </div>
-                      )}
-                    </CardContent>
-                    <CardFooter className="flex flex-col sm:flex-row gap-5 px-4 pb-4">
-                      <Button
-                        asChild
-                        variant="secondary"
-                        className="w-fit"
-                        aria-label={`View ${proj.title} on GitHub`}
-                      >
-                        <a
-                          href={proj.githubLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      </CardHeader>
+                      <CardContent className="pt-4 flex-grow">
+                        <CardTitle className="text-base md:text-lg lg:text-xl font-semibold">
+                          {proj.title}
+                        </CardTitle>
+
+                        {proj.tech && proj.tech.length > 0 && (
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {proj.tech.map((tech, index) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="text-xs px-2 py-1"
+                              >
+                                {tech}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                      </CardContent>
+                      <CardFooter className="flex flex-col sm:flex-row gap-5 px-4 pb-4">
+                        <Button
+                          asChild
+                          variant="secondary"
+                          className="w-fit"
+                          aria-label={`View ${proj.title} on GitHub`}
                         >
-                          <Github className="mr-2 h-4 w-4" /> GitHub
-                        </a>
-                      </Button>
-                      <Button
-                        asChild
-                        className="w-fit bg-red-600 text-white"
-                        aria-label={`View live demo of ${proj.title}`}
-                      >
-                        <a
-                          href={proj.liveLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          <a
+                            href={proj.githubLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Github className="mr-2 h-4 w-4" /> GitHub
+                          </a>
+                        </Button>
+                        <Button
+                          asChild
+                          className="w-fit bg-red-600 text-white"
+                          aria-label={`View live demo of ${proj.title}`}
                         >
-                          <ExternalLink className="mr-2 h-4 w-4" /> Live
-                        </a>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </motion.article>
-              ))
+                          <a
+                            href={proj.liveLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink className="mr-2 h-4 w-4" /> Live
+                          </a>
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </motion.article>
+                );
+              })
             )}
           </AnimatePresence>
         </motion.div>
 
-        {/* Load More Button */}
         {visibleCount < filteredProjects.length && (
           <motion.div
             className="mt-6 flex justify-center sm:justify-end"
@@ -269,3 +273,4 @@ export default function Projects() {
     </div>
   );
 }
+
