@@ -3,8 +3,7 @@ const multer = require("multer");
 const path = require("path");
 
 exports.createProject = async (req, res) => {
-  console.log("REQ BODY:", req.body);
-  console.log("REQ FILE:", req.file);
+ 
   try {
     const { title, liveLink, githubLink } = req.body || {};
 
