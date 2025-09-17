@@ -9,7 +9,7 @@ exports.createProject = async (req, res) => {
     const { title, liveLink, githubLink } = req.body || {};
 
     if (!title) {
-      return res.status(400).json({ message: "Title is required" });
+      return res.status(400).json({ message: "Title is required!" });
     }
 
     if (!req.file) {
