@@ -3,8 +3,8 @@ const multer = require("multer");
 const path = require("path");
 
 exports.createProject = async (req, res) => {
-  console.log("REQ BODY:", req.body);
-  console.log("REQ FILE:", req.file);
+  // console.log("REQ BODY:", req.body);
+  // console.log("REQ FILE:", req.file);
   try {
     const { title, liveLink, githubLink } = req.body || {};
 
@@ -159,7 +159,7 @@ exports.toggleCompleted = async (req, res) => {
 // ✅ Add a single language to a project's tech stack
 exports.addLanguage = async (req, res) => {
 
-  console.log("Add language called with:", req.body);
+  // console.log("Add language called with:", req.body);
   try {
     const { id } = req.params;
     const { language } = req.body;
