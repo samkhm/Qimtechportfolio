@@ -153,11 +153,15 @@ export default function Projects() {
             ) : (
               visibleProjects.map((proj) => {
                 // ✅ FIX: Construct image URL correctly
-                const imageUrl = proj.imagePath
-                  ? proj.imagePath
-                  : proj.image
-                  ? `${API.defaults.baseURL}images/${proj.image}`
-                  : placeholder;
+                const imageUrl =
+                  proj.imagePath?.startsWith("http") || proj.image?.startsWith("http")
+                    ? proj.imagePath || proj.image // already a full URL (cloud/CDN)
+                    : proj.imagePath
+                    ? `${proj.imagePath}` // local API-provided URL
+                    : proj.image
+                    ? `${API.defaults.baseURL}images/${proj.image}` // local fallback
+                    : placeholder;
+
 
                 return (
                   <motion.article
@@ -190,7 +194,8 @@ export default function Projects() {
                             >
                               {proj.completed
                                 ? "Completed 🎉"
-                                : "In Progress 🚧"}
+                                : "In Progress 🚧"
+                                }
                             </Badge>
                           </div>
                         </div>
@@ -200,20 +205,20 @@ export default function Projects() {
                           {proj.title}
                         </CardTitle>
 
-                        {proj.tech && proj.tech.length > 0 && (
-                          <div className="mt-3 flex flex-wrap gap-2">
-                            {proj.tech.map((tech, index) => (
-                              <Badge
-                                key={index}
-                                variant="outline"
-                                   className="text-xs px-3 py-1 rounded-full font-semibold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 text-white shadow-md hover:scale-105 transition-transform duration-200"
- 
-                              >
-                                {tech}
-                              </Badge>
-                            ))}
-                          </div>
-                        )}
+      {proj.tech.map((tech, index) => (
+  <Badge
+    key={index}
+    variant="outline"
+    className={`text-xs px-3 py-1 rounded-full font-medium shadow-md transition-transform duration-200 hover:scale-105
+      ${index % 3 === 0 ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" : ""}
+      ${index % 3 === 1 ? "bg-gradient-to-r from-green-500 to-emerald-400 text-white" : ""}
+      ${index % 3 === 2 ? "bg-gradient-to-r from-pink-500 to-rose-400 text-white" : ""}
+    `}
+  >
+    {tech}
+  </Badge>
+))}
+
                       </CardContent>
                       <CardFooter className="flex flex-col sm:flex-row gap-5 px-4 pb-4">
                         <Button

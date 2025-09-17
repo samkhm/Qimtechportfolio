@@ -3,19 +3,19 @@ const multer = require("multer");
 const path = require("path");
 
 exports.createProject = async (req, res) => {
- 
   try {
-    const { title, liveLink, githubLink } = req.body || {};
+    const { title, liveLink, githubLink } = req.body;
 
     if (!title) {
       return res.status(400).json({ message: "Title is required!" });
     }
 
-    if (!req.file) {
+    if (!req.file || !req.file.path) {
       return res.status(400).json({ message: "Project image is required" });
     }
 
-    const imageUrl = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+    // Cloudinary provides the full URL in req.file.path
+    const imageUrl = req.file.path;
 
     const projectExist = await Project.findOne({ title });
     if (projectExist) {
@@ -24,7 +24,7 @@ exports.createProject = async (req, res) => {
 
     const project = await Project.create({
       title,
-      image: req.file.filename,
+      image: imageUrl, // Store full Cloudinary URL
       liveLink,
       githubLink,
     });
@@ -32,9 +32,7 @@ exports.createProject = async (req, res) => {
     return res.status(201).json({
       message: "Project created successfully",
       project,
-      imagePath: imageUrl,
     });
-
   } catch (error) {
     console.error("Error creating project:", error);
     return res.status(500).json({
@@ -49,6 +47,7 @@ exports.createProject = async (req, res) => {
 
 
 
+
 //api/hobbies/getAllHobbies
 exports.getAllProjects = async (req, res) => {
   const { search } = req.query;
@@ -57,27 +56,21 @@ exports.getAllProjects = async (req, res) => {
     let projects;
 
     if (search && search.trim() !== "") {
-      // Search filter (case-insensitive)
       projects = await Project.find({
         title: { $regex: search, $options: "i" },
       });
     } else {
-      // Return all if search is missing or empty
       projects = await Project.find();
     }
 
-    // Build full image URL for each project
-    const projectsWithUrls = projects.map((project) => ({
-      ...project.toObject(),
-      imagePath: `${req.protocol}://${req.get("host")}/images/${project.image}`,
-    }));
-
-    res.json({ projects: projectsWithUrls });
+    // Cloudinary already gives full URLs
+    res.json({ projects });
   } catch (err) {
     console.error("Error fetching projects:", err);
     res.status(500).json({ error: "Server error fetching projects" });
   }
 };
+
 
 
 
