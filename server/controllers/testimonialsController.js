@@ -49,7 +49,7 @@ exports.deleteTestimonies = async (req, res) =>{
         if(!message) return res.status(404).json({ message: "message not found"});
 
         if(req.user.role !== "admin"){
-            return res.status(403).json({ message: "You cant delete a message"});
+            return res.status(403).json({ message: "You cant delete a message!"});
         };
 
         await Testimony.findByIdAndDelete(req.params.id);
