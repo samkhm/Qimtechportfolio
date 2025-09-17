@@ -1,0 +1,36 @@
+# Dependencies
+node_modules
+.pnpm-store
+.pnp
+.pnp.*
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Build output
+dist
+build
+coverage
+.cache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Env files (don’t commit secrets!)
+.env
+.env.*.local
+
+# Editor files
+.vscode
+.idea
+*.swp
