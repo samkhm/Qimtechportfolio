@@ -24,7 +24,7 @@ router.put(
   "/project/:id",
   protect,
   authorize(["admin"]),
-  upload.single("imageFile"), // handle file
+  upload.single("file"), // handle file
   updateProject
 );
 router.delete("/project/:id", protect, authorize(["admin"]), deleteProject);

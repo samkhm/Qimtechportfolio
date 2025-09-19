@@ -1,6 +1,8 @@
 const Project = require("../models/Projects");
 const multer = require("multer");
 const path = require("path");
+const cloudinary = require("cloudinary").v2;
+
 
 exports.createProject = async (req, res) => {
   try {
@@ -85,31 +87,41 @@ exports.updateProject = async (req, res) => {
       return res.status(404).json({ message: "No Project found" });
     }
 
-    // Prepare update object
     const updateData = {};
-
     if (req.body.title) updateData.title = req.body.title.trim();
     if (req.body.githubLink) updateData.githubLink = req.body.githubLink.trim();
     if (req.body.liveLink) updateData.liveLink = req.body.liveLink.trim();
 
-    // ✅ Handle tech (could be JSON string or array)
     if (req.body.tech) {
       try {
         const parsedTech =
           typeof req.body.tech === "string"
             ? JSON.parse(req.body.tech)
             : req.body.tech;
-        if (Array.isArray(parsedTech)) {
-          updateData.tech = parsedTech;
-        }
+        if (Array.isArray(parsedTech)) updateData.tech = parsedTech;
       } catch (err) {
         console.error("Error parsing tech:", err.message);
       }
     }
 
-    // ✅ If a file was uploaded, save its filename
+    // ✅ Handle image upload to Cloudinary
     if (req.file) {
-      updateData.image = req.file.filename;
+      // Optionally: delete old Cloudinary image if exists
+      if (project.image && project.image.includes("cloudinary.com")) {
+        const publicId = project.image.split("/").pop().split(".")[0];
+        try {
+          await cloudinary.uploader.destroy(publicId);
+        } catch (err) {
+          console.warn("Failed to delete old Cloudinary image:", err.message);
+        }
+      }
+
+      // Upload new image
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "projects",
+      });
+
+      updateData.image = result.secure_url; // ✅ store Cloudinary URL
     }
 
     const updatedProject = await Project.findByIdAndUpdate(
@@ -118,15 +130,19 @@ exports.updateProject = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    res.json({
-      message: "Project updated successfully",
-      project: updatedProject,
-    });
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    res.json(updatedProject); // ✅ return updated project directly
   } catch (error) {
     console.error("Failed to update", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
+
 
 
 
@@ -150,14 +166,12 @@ exports.toggleCompleted = async (req, res) => {
 
 // ✅ Add a single language to a project's tech stack
 exports.addLanguage = async (req, res) => {
-
-  // console.log("Add language called with:", req.body);
   try {
     const { id } = req.params;
     const { language } = req.body;
 
     if (!language || !language.trim()) {
-      return res.status(400).json({ message: "Language is required please"});
+      return res.status(400).json({ message: "Language is required please" });
     }
 
     const project = await Project.findByIdAndUpdate(
@@ -170,12 +184,13 @@ exports.addLanguage = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    res.json({ message: "Language added", project });
+    res.json(project); // ✅ return project directly
   } catch (error) {
     console.error("Failed to add language:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 // ✅ Remove a single language from a project's tech stack
 exports.removeLanguage = async (req, res) => {
@@ -197,12 +212,13 @@ exports.removeLanguage = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    res.json({ message: "Language removed", project });
+    res.json(project); // ✅ return project directly
   } catch (error) {
     console.error("Failed to remove language:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 
 

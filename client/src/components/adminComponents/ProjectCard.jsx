@@ -38,41 +38,41 @@ export default function ProjectCard({
   const [newLang, setNewLang] = useState("");
 
   // Preview image
-  const previewImage = imageFile
-    ? URL.createObjectURL(imageFile)
-    : project.imageFile
-    ? project.imageFile.startsWith("/uploads")
-      ? project.imageFile
-      : `/uploads/${project.imageFile}`
+// ✅ Preview logic (works both locally & with Cloudinary URLs)
+const previewImage = imageFile
+  ? URL.createObjectURL(imageFile) // new local upload
+  : project.image?.startsWith("http") // already hosted (Cloudinary)
+    ? project.image
     : null;
 
-  // 🔹 Update Project info
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.append("title", title || project.title);
-    formData.append("githubLink", githubLink || project.githubLink);
-    formData.append("liveLink", liveLink || project.liveLink);
+        // Cloudinary secure_url from DB
 
-    if (imageFile instanceof File) {
-      formData.append("imageFile", imageFile);
-    }
+// 🔹 Update Project info
+const handleSubmit = () => {
+  const formData = new FormData();
+  formData.append("title", title || project.title);
+  formData.append("githubLink", githubLink || project.githubLink);
+  formData.append("liveLink", liveLink || project.liveLink);
 
-    updateProject(project._id, formData);
-    setOpen(false);
-  };
+  if (imageFile instanceof File) {
+    formData.append("file", imageFile); // ✅ field name should match multer/cloudinary config
+  }
+
+  updateProject(project._id, formData);
+  setOpen(false);
+};
+
 
   // 🔹 Add Language
-  const handleAddLanguage = async () => {
+const handleAddLanguage = async () => {
   if (!newLang.trim()) return;
-
   try {
-    const res = await API.patch(
-      `/admin_operations/project/${project._id}/language`,
-      { language: newLang.trim() } // ✅ Make sure the key is "language"
-    );
+    const res = await API.patch(`/admin_operations/project/${project._id}/language`, {
+      language: newLang.trim(),
+    });
 
-    // Update local state correctly
-    const updatedProject = res.data.project;
+    const updatedProject = res.data; // ✅ directly the project
+
     setLanguages(updatedProject.tech || []);
     updateProject(project._id, updatedProject);
 
@@ -84,21 +84,28 @@ export default function ProjectCard({
 };
 
 
-  // 🔹 Remove Language
-  const handleRemoveLanguage = async (lang) => {
-    const updatedTech = languages.filter((l) => l !== lang);
-    setLanguages(updatedTech);
 
-    try {
-      await API.delete(`/admin_operations/project/${project._id}/language`, {
+  // 🔹 Remove Language
+ const handleRemoveLanguage = async (lang) => {
+  try {
+    const res = await API.delete(
+      `/admin_operations/project/${project._id}/language`,
+      {
         data: { language: lang },
-      });
-      updateProject(project._id, { tech: updatedTech });
-      toast.success("Language removed!");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to remove language");
-    }
-  };
+      }
+    );
+
+    const updatedProject = res.data; // ✅ server returns updated project
+
+    setLanguages(updatedProject.tech || []); // ✅ update local languages
+    updateProject(project._id, updatedProject); // ✅ merge into parent state
+
+    toast.success("Language removed!");
+  } catch (err) {
+    toast.error(err?.response?.data?.message || "Failed to remove language");
+  }
+};
+
 
   return (
     <Card className={`relative animation-fade ${project.completed ? "bg-gray-100" : ""}`}>
@@ -127,7 +134,9 @@ export default function ProjectCard({
 
             <div className="space-y-3 mt-4">
               <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter Title" />
-              <Input type="file" accept="image/*" onChange={(e) => e.target.files[0] && setImageFile(e.target.files[0])} />
+              <Input type="file" 
+                 accept="image/*" 
+                 onChange={(e) => e.target.files[0] && setImageFile(e.target.files[0])} />
 
               {previewImage && (
                 <div className="relative w-32 h-32 group cursor-pointer mt-2">

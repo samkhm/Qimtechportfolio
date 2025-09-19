@@ -98,36 +98,28 @@ const updateProject = async (id, payload) => {
   try {
     let res;
 
-    // If payload is FormData (file upload)
     if (payload instanceof FormData) {
       res = await API.put(`/admin_operations/project/${id}`, payload, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
     } else {
-      // Normal JSON payload
       res = await API.put(`/admin_operations/project/${id}`, payload);
     }
 
-    const updatedProject = res.data;
+    const updatedProject = res.data; // ✅ directly the project object
 
-    // ✅ Merge only updated fields
     setProject((prev) =>
-      prev.map((p) => {
-        if (p._id === id) {
-          return { ...p, ...updatedProject };
-        }
-        return p;
-      })
+      prev.map((p) => (p._id === id ? { ...p, ...updatedProject } : p))
     );
 
-    toast.success(updatedProject?.message || "Project updated!");
+    toast.success("Project updated!");
   } catch (error) {
     console.error("Update Project Error:", error);
     toast.error(error?.response?.data?.message || "Failed to update project");
   }
 };
+
+
 
 
 
