@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import RoleDashboard from "./pages/RoleDashboard";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import Home from "./pages/Home";
+import Testimonies from "./pages/Testimonies";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function App({children}){
@@ -15,6 +16,7 @@ export default function App({children}){
         <Route path="/" element={<Navigate to ="/home"/>}/>        
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/testimonies" element={ <Testimonies /> } />
         <Route 
            path="/dashboard"
            element = {

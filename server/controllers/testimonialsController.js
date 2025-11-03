@@ -3,7 +3,7 @@ const Testimony = require("../models/Testimonials");
 //api/rooms
 exports.createTestimony = async (req, res) => {
   try {
-    const { message, ...rest } = req.body;
+    const { first_name, last_name, message } = req.body;
 
     if (!message) {
       return res.status(400).json({ message: "message is required" });
@@ -15,8 +15,9 @@ exports.createTestimony = async (req, res) => {
     }
 
 const messageP = await Testimony.create({
-      message, 
-      ...rest     
+      first_name,
+      last_name,
+      message           
     });
 
     return res.status(201).json(messageP);

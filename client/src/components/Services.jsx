@@ -2,6 +2,8 @@ import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import API from "@/services/api";
 import { useState, useEffect } from "react";
+import { ClipLoader } from "react-spinners";
+
 
 export default function Services() {
   const [services = [], setServices] = useState([]);
@@ -70,9 +72,9 @@ const loadServices = async () =>{
         >
             {
           loading ? (
-            <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse">
-            Loading services...
-          </p>
+            <div className="flex items-center justify-center">              
+            <ClipLoader color="green"/>
+          </div>
           ) : (
             services.map((s) => (
             <motion.div

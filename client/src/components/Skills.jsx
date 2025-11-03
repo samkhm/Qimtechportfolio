@@ -2,6 +2,7 @@ import Image from "@/assets/website.jpg";
 import { motion } from "framer-motion";
 import API from "@/services/api";
 import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 
 export default function Skills() {
   const [skills = [], setSkills] = useState([]);
@@ -71,9 +72,9 @@ export default function Skills() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
           {
             loading ? (
-          <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse">
-            Loading skills...
-          </p>              
+              <div className="flex items-center justify-center">              
+              <ClipLoader color="green"/>
+            </div>              
             ) :
             (
           skills.map((s, i) => (

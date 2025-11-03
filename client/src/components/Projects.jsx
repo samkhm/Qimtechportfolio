@@ -11,6 +11,8 @@ import { Github, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import API from "@/services/api";
+import { BounceLoader } from "react-spinners";
+
 
 const placeholder = "/placeholder.svg";
 
@@ -147,9 +149,11 @@ export default function Projects() {
                 />
               ))
             ) : filteredProjects.length === 0 ? (
-              <p className="text-lg font-medium text-gray-600 col-span-full text-center">
-                No projects available.
-              </p>
+
+              <div className="flex items-center justify-center">              
+              <BounceLoader color="rgba(9, 146, 173, 0.25)"/>
+            </div>
+
             ) : (
               visibleProjects.map((proj) => {
                 // ✅ FIX: Construct image URL correctly

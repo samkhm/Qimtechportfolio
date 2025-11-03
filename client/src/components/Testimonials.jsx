@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import API from "@/services/api";
 import { useState, useEffect } from "react";
+import { BounceLoader } from "react-spinners";
 
 export default function Testimonials() {
  const [testimonies = [], setTestimonies] = useState([]);
@@ -54,9 +55,9 @@ const approvedTestimony = testimonies.filter(t => t.approved === true);
 
       {
         loading ? (
-          <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse ml-90">
-            Loading testimonies...
-          </p>          
+          <div className="flex items-center justify-center w-screen">              
+              <BounceLoader color="rgba(9, 146, 173, 0.25)"/>
+            </div>          
         ):(
 
           approvedTestimony.map((test) => (

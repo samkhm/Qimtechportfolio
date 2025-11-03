@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import API from "@/services/api";
 import { useState, useEffect } from "react";
 import { fa } from "zod/v4/locales";
+import { ClipLoader } from "react-spinners";
 
 export default function About() {
 
@@ -189,9 +190,9 @@ export default function About() {
 
       {
         loading ? (
-          <p className="text-lg font-medium text-[rgb(66,153,170)] animate-pulse">
-            Loading hobbies...
-          </p>
+          <div className="flex items-center justify-center">              
+          <ClipLoader color="green"/>
+        </div>
 
         ) : (
           hobby.map((h, i) => (
