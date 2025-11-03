@@ -127,9 +127,9 @@ const handleSignup = async () => {
     spacing={20}
     showFade={true}
     fadeIntensity={20}
-    className="flex items-center justify-center w-full h-full"
+    // className="flex items-center justify-center w-full h-full"
   >
-    <Card className="w-full max-w-md shadow-xl animate-fade bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800">
+    <Card className="w-screen max-w-md shadow-xl animate-fade bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200 dark:border-zinc-800">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
         <CardDescription
