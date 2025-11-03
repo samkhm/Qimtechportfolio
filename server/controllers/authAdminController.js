@@ -12,6 +12,14 @@ try {
     const emailExist = await User.findOne({ email });
     if(emailExist) return res.status(401).json({ message: "User Already Exist"});
     
+    const admins = await User.find();
+    
+    if (admins.length > 0) {
+        const existingAdmin = await User.findOne({ role: "admin" });
+        if (existingAdmin) {
+          return res.status(401).json({ message: "Only one admin is allowed, sorry!" });
+        }
+      }
 
     const hashed = await bcrypt.hash(password, 10);
     const user = await User.create({ first_name, last_name, email,

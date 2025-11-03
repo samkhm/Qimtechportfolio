@@ -1,5 +1,6 @@
 import { getUserRole, getUserFromToken } from "@/utils/auth";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { ClipLoader } from "react-spinners";
 
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
  
 
   const capitalizedFirstName =
-    user?.firstName?.charAt(0).toUpperCase() + user?.firstName?.slice(1);
+    user?.first_name?.charAt(0).toUpperCase() + user?.first_name?.slice(1);
 
   const currentHour = new Date().getHours();
   let timeOfDay = "day";
@@ -20,34 +21,34 @@ export default function Home() {
     {
       key: "user",
       title: "users",
-      content:  "Loading...",
+      content: <ClipLoader color="green"/>,
     },
     {
       key: "hobbies",
       title: "hobbies",
-      content:  "Loading...",
+      content: <ClipLoader color="green"/>,
     },
     {
       key: "services",
       title: "services",
-      content:  "Loading...",
+      content: <ClipLoader color="green"/>,
     },
     {
       key: "skills",
       title: "skills",
-      content:  "Loading...",
+      content:  <ClipLoader color="green"/>,
     },
     ,
     {
       key: "projects",
       title: "projects",
-      content:  "Loading...",
+      content:  <ClipLoader color="green"/>,
     },
     ,
     {
       key: "testimonies",
       title: "testimonials",
-      content:  "Loading...",
+      content:  <ClipLoader color="green"/>,
     },
   ];
 
