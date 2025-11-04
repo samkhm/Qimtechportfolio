@@ -8,7 +8,7 @@ import {
 import { Menu as MenuIcon, X as NavbarCloseIcon } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { Button } from "./lightswind/button";
-import Logo from "@/assets/logon.png"
+import Logo from "@/assets/samuelDigitalxlogo.svg"
 import AdminLogin from "./AdminLogin";
 
 const menuItems = [
