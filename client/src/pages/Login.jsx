@@ -52,7 +52,7 @@ export default function Login() {
       }, 1000);
     } catch (err) {
       const errorMsg =
-        err.response?.data?.message || "Login failed. Please try again.";
+        err.response?.data?.message || "Login failed. Server unreachable";
       setMessage(errorMsg);
       setMessageType("error");
     } finally {
